@@ -1,11 +1,10 @@
-<script setup lang="ts">
-import LoginPage from './views/LoginPage.vue'
-</script>
-
+<!-- src/App.vue -->
 <template>
-  <LoginPage />
+  <router-view />
 </template>
 
+<script setup lang="ts">
+</script>
 
 <style scoped>
 </style>
