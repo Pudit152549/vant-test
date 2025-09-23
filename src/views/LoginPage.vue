@@ -35,7 +35,7 @@ const onDelete = () => {
 
     <!-- Content -->
     <main class="flex-1 px-4 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
-      <h2 class="text-3xl font-bold text-blue-500">Welcome to Login Page</h2>
+      <h2 class="text-2xl font-bold text-blue-500">Welcome to Login Page</h2>
 
       <van-form @submit="onSubmit" class="flex flex-col">
         <van-cell-group inset>
