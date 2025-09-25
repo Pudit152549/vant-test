@@ -5,6 +5,7 @@ const navbar = ref(0)
 const search = ref('');
 const activeNames = ref(['1']);
 const currentPage = ref(1);
+const sidebar = ref(0)
 
 
 </script>
@@ -18,6 +19,11 @@ const currentPage = ref(1);
       <van-divider :style="{ borderColor: '#1989fa' }" />
       <van-search v-model="search" placeholder="Search" />
       <van-divider :style="{ borderColor: '#1989fa' }" />
+      <van-sidebar v-model="sidebar">
+        <van-sidebar-item title="Title" />
+        <van-sidebar-item title="Title" />
+        <van-sidebar-item title="Title" />
+      </van-sidebar>
       <van-collapse v-model="activeNames">
         <van-collapse-item title="Card 1" name="1">
           <van-card
@@ -40,6 +46,7 @@ const currentPage = ref(1);
           />
         </van-collapse-item>
       </van-collapse>
+
       <van-pagination v-model="currentPage" :total-items="24" :items-per-page="5" />
     </main>
     
