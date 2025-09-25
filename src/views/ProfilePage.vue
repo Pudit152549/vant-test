@@ -1,76 +1,151 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { showDialog, showToast } from 'vant'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { useWindowSize } from '@vueuse/core'
 
-const active = ref(0)
 const router = useRouter()
-    const tel = ref('13000000000');
-    const name = ref('John Snow');
-    const onEdit = () => showToast('edit');
-const onClickLeft = () => history.back();
+const route = useRoute()
+
+// --- Responsive: สลับ Sidebar/Tabbar ตามความกว้างจอ
+const { width } = useWindowSize()
+const isDesktop = computed(() => width.value > 1028)
+
+// --- โปรไฟล์
+const tel = ref('13000000000')
+const name = ref('John Snow')
+const onEdit = () => showToast('edit')
+
+// --- Navbar/Tabbar
+const navbar = ref(0)
+
+// --- Sidebar
+const sidebar = ref(0)
+const menuRoutes: string[] = ['/home', '/search', '/friends', '/profile']
+
+const onSidebarChange = (index: number) => {
+  const path = menuRoutes[index]
+  if (path) router.push(path)
+}
+
+// sync active index ของ sidebar ตาม route ปัจจุบัน
+const syncSidebarFromRoute = () => {
+  const i = menuRoutes.indexOf(route.path)
+  sidebar.value = i >= 0 ? i : 0
+}
+syncSidebarFromRoute()
+watch(() => route.path, syncSidebarFromRoute)
+
+// --- Logout dialog
 const onLogout = () => {
   showDialog({
     title: 'Notification',
     message: 'Are you sure you want to logout?',
-    showCancelButton: true, // ให้มีปุ่ม Cancel
+    showCancelButton: true,
   })
     .then(() => {
-      // กด confirm
       router.push('/') // กลับไปหน้า Login
       console.log('user logged out')
     })
     .catch(() => {
-      // กด cancel
       console.log('cancel logout')
     })
 }
 
+const onClickLeft = () => history.back()
 </script>
 
 <template>
-  <div class="w-full min-h-dvh flex flex-col bg-white">
-    <van-nav-bar fixed placeholder title="การตั้งค่า" 
-    left-text="Back"
-    left-arrow
-    @click-left="onClickLeft"/>
-
-    <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
-      <h2 class="text-2xl font-bold text-blue-500 text-center">Profile Setting</h2>
-      <van-divider :style="{ borderColor: '#1989fa' }" />
-        <div class="my-4">
-          <van-row justify="center">
-            <van-image
-            round
-            width="10rem"
-            height="10rem"
-            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
-            />
-          </van-row>
+  <div class="w-full min-h-dvh bg-white flex">
+    <!-- ===== Desktop: Sidebar + Content ===== -->
+    <template v-if="isDesktop">
+      <!-- Sidebar (ซ้าย) -->
+      <aside class="hidden lg:flex w-64 border-r border-gray-200 min-h-dvh sticky top-0">
+        <div class="w-full pt-[56px]">
+          <van-sidebar v-model="sidebar" @change="onSidebarChange">
+            <van-sidebar-item title="หน้าแรก" />
+            <van-sidebar-item title="ค้นหา" disabled/>
+            <van-sidebar-item title="เพื่อน" disabled/>
+            <van-sidebar-item title="การตั้งค่า" />
+          </van-sidebar>
         </div>
-        <van-contact-card type="edit" :tel="tel" :name="name" @click="onEdit" />
-      <van-divider :style="{ borderColor: '#1989fa' }" />
-        <div class="mt-4 px-4">
-        <van-row justify="center">
-          <van-button
-            type="danger"
-            size="small"
-            @click="onLogout"
-          >
-            Logout
-          </van-button>
-        </van-row>
+      </aside>
+
+      <!-- Content (ขวา) -->
+      <div class="flex-1 flex flex-col">
+        <van-nav-bar fixed placeholder title="การตั้งค่า" left-text="Back" left-arrow @click-left="onClickLeft" />
+
+        <main class="flex-1 px-6 pt-4 pb-[calc(16px+env(safe-area-inset-bottom))]">
+          <h2 class="text-2xl font-bold text-blue-500 text-center">Profile Setting</h2>
+          <van-divider :style="{ borderColor: '#1989fa' }" />
+
+          <div class="my-4">
+            <van-row justify="center">
+              <van-image
+                round
+                width="10rem"
+                height="10rem"
+                src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+              />
+            </van-row>
+          </div>
+
+          <van-contact-card type="edit" :tel="tel" :name="name" @click="onEdit" />
+
+          <van-divider :style="{ borderColor: '#1989fa' }" />
+
+          <div class="mt-4 px-4">
+            <van-row justify="center">
+              <van-button type="danger" size="small" @click="onLogout">Logout</van-button>
+            </van-row>
+          </div>
+        </main>
       </div>
-    </main>
-    <van-tabbar route v-model="active" fixed safe-area-inset-bottom>
-      <van-tabbar-item replace to="/home" icon="home-o">หน้าแรก</van-tabbar-item>
-      <van-tabbar-item icon="search">ค้นหา</van-tabbar-item>
-      <van-tabbar-item icon="friends-o">เพื่อน</van-tabbar-item>
-      <van-tabbar-item icon="setting-o">การตั้งค่า</van-tabbar-item>
-    </van-tabbar>
+    </template>
+
+    <!-- ===== Mobile/Tablet: Content + Tabbar ===== -->
+    <template v-else>
+      <div class="w-full flex-1 flex flex-col">
+        <van-nav-bar fixed placeholder title="การตั้งค่า" left-text="Back" left-arrow @click-left="onClickLeft" />
+
+        <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
+          <h2 class="text-2xl font-bold text-blue-500 text-center">Profile Setting</h2>
+          <van-divider :style="{ borderColor: '#1989fa' }" />
+
+          <div class="my-4">
+            <van-row justify="center">
+              <van-image
+                round
+                width="10rem"
+                height="10rem"
+                src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+              />
+            </van-row>
+          </div>
+
+          <van-contact-card type="edit" :tel="tel" :name="name" @click="onEdit" />
+
+          <van-divider :style="{ borderColor: '#1989fa' }" />
+
+          <div class="mt-4 px-4">
+            <van-row justify="center">
+              <van-button type="danger" size="small" @click="onLogout">Logout</van-button>
+            </van-row>
+          </div>
+        </main>
+
+        <!-- Tabbar เฉพาะจอเล็ก -->
+        <van-tabbar route v-model="navbar" fixed safe-area-inset-bottom>
+          <van-tabbar-item replace to="/home" icon="home-o">หน้าแรก</van-tabbar-item>
+          <van-tabbar-item replace to="/search" icon="search">ค้นหา</van-tabbar-item>
+          <van-tabbar-item replace to="/friends" icon="friends-o">เพื่อน</van-tabbar-item>
+          <van-tabbar-item replace to="/profile" icon="setting-o">การตั้งค่า</van-tabbar-item>
+        </van-tabbar>
+      </div>
+    </template>
   </div>
 </template>
 
 <style scoped>
-
+/* ไม่จำเป็นต้องมี CSS เพิ่ม — ใช้ Tailwind utility พอแล้ว */
 </style>
