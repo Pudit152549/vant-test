@@ -55,12 +55,12 @@ const onDelete = () => {
 </script>
 
 <template>
-  <div class="max-w-md mx-auto min-h-dvh flex flex-col bg-white">
+  <div class="w-full min-h-dvh flex flex-col bg-white">
     <van-nav-bar fixed placeholder title="Register" left-text="Back" left-arrow @click-left="onClickLeft" />
 
-    <main class="flex-1 px-4 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
-      <h2 class="text-2xl font-bold text-blue-500">Register</h2>
-      <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }" />
+    <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
+      <h2 class="text-2xl font-bold text-blue-500 text-center">Register</h2>
+      <van-divider :style="{ borderColor: '#1989fa' }" />
 
       <van-form @submit="onRegister" class="flex flex-col mt-4">
         <van-cell-group inset>
@@ -82,9 +82,9 @@ const onDelete = () => {
           @delete="onDelete"
         />
 
-        <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }" />
+        <van-divider :style="{ borderColor: '#1989fa' }" />
 
-        <div class="mt-4">
+        <div class="mt-4 px-4">
           <van-button round block type="primary" native-type="submit">
             Register
           </van-button>
