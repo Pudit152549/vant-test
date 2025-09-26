@@ -1,44 +1,40 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { showToast } from 'vant'
+import { showDialog } from 'vant'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const username = ref('')
 const password = ref('')
-const active = ref(0)
 
-const onSubmit = (values: any) => {
-  console.log('submit', values)
-}
-const onClickLeft = () => history.back()
+const onLogin = async (values: Record<string, string>) => {
+  if (!values.Username || !values.Password) return
 
-// NumberKeyboard
-const show = ref(false)
-const onInput = (value: string) => {
-  showToast(value)
-}
-const onDelete = () => {
-  showToast('delete')
+  await showDialog({
+    title: 'แจ้งเตือน',
+    message: 'ล็อกอินสำเร็จ',
+  })
+
+  router.push('/home')
 }
 </script>
 
 <template>
-  <div class="max-w-md mx-auto min-h-dvh flex flex-col bg-white">
-    <!-- NavBar -->
-    <van-nav-bar
-      fixed
-      placeholder
-      title="Login"
-      left-text="Back"
-      left-arrow
-      @click-left="onClickLeft"
-    />
+  <!-- เปลี่ยนเป็น w-full และตัด max-w-md/mx-auto ออก -->
+  <div class="w-full min-h-dvh flex flex-col bg-white">
+    <van-nav-bar fixed placeholder title="Login" />
 
-    <!-- Content -->
-    <main class="flex-1 px-4 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
-      <h2 class="text-3xl font-bold text-blue-500">Welcome to Login Page</h2>
+    <!-- เอา padding ข้างออกให้เต็มหน้าจอ -->
+    <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
+      <h2 class="text-2xl font-bold text-blue-500 text-center">Welcome to Login Page</h2>
 
-      <van-form @submit="onSubmit" class="flex flex-col">
-        <van-cell-group inset>
+      <!-- divider ให้เต็มขอบ -->
+      <van-divider :style="{ borderColor: '#1989fa' }" />
+
+      <van-form @submit="onLogin" class="flex flex-col mt-4">
+        <!-- ลบ inset เพื่อให้ cell-group กว้างเต็ม -->
+        <van-cell-group>
           <van-field
             v-model="username"
             name="Username"
@@ -56,38 +52,31 @@ const onDelete = () => {
           />
         </van-cell-group>
 
-        <!-- ปุ่มโชว์คีย์บอร์ด -->
-        <van-cell title="Show Keyboard" is-link @click="show = true" />
+        <van-divider :style="{ borderColor: '#1989fa' }" />
 
-        <!-- Number keyboard -->
-        <van-number-keyboard
-          :show="show"
-          close-button-text="Close"
-          @blur="show = false"
-          @input="onInput"
-          @delete="onDelete"
-        />
-
-        <!-- Submit button -->
-        <div class="mt-4">
-          <van-button round block type="primary" native-type="submit">
+        <div class="mt-4 px-4">
+          <!-- block = เต็มความกว้างของ container; container ตอนนี้ก็คือทั้งหน้าแล้ว -->
+          <van-button
+            round
+            block
+            type="primary"
+            native-type="submit"
+            :disabled="!username || !password"
+          >
             Submit
           </van-button>
+
+          <div class="mt-4 text-center">
+            <van-button plain type="primary" size="small" @click="$router.push('/register')">
+              Register
+            </van-button>
+          </div>
         </div>
       </van-form>
     </main>
-
-    <!-- Tabbar -->
-    <van-tabbar v-model="active" fixed safe-area-inset-bottom>
-      <van-tabbar-item icon="home-o">Tab</van-tabbar-item>
-      <van-tabbar-item icon="search">Tab</van-tabbar-item>
-      <van-tabbar-item icon="friends-o">Tab</van-tabbar-item>
-      <van-tabbar-item icon="setting-o">Tab</van-tabbar-item>
-    </van-tabbar>
   </div>
 </template>
 
-
 <style scoped>
-
+/* ไม่จำเป็นต้องมีสไตล์เพิ่มก็เต็มหน้าจอแล้ว */
 </style>
