@@ -14,7 +14,7 @@ const currentPage = ref(1)
 const sidebar = ref(0)
 // กำหนด path ของแต่ละ index ของ Sidebar
 const menuRoutes: string[] = [
-  '/',
+  '/home',
   '/search',
   '/friends',
   '/profile'
@@ -30,11 +30,11 @@ const onSidebarChange = (index: number) => {
 
 <template>
   <div class="w-full min-h-dvh bg-white flex">
-    <!-- ===== Desktop layout: Sidebar + Content ===== -->
     <template v-if="isDesktop">
       <!-- Sidebar (ซ้าย) -->
-      <aside class="hidden lg:flex w-64 border-r border-gray-200 min-h-dvh sticky top-0">
-        <div class="w-full pt-[60px]"> <!-- กันซ้อนกับ NavBar -->
+      <div class="min-h-dvh border-r border-gray-200 sticky top-0"
+           style="--van-sidebar-width: 200px;">
+        <div class="pt-[60px]">
           <van-sidebar v-model="sidebar" @change="onSidebarChange">
             <van-sidebar-item title="หน้าแรก" />
             <van-sidebar-item title="ค้นหา" disabled/>
@@ -42,7 +42,7 @@ const onSidebarChange = (index: number) => {
             <van-sidebar-item title="การตั้งค่า" />
           </van-sidebar>
         </div>
-      </aside>
+      </div>
 
       <!-- Content (ขวา) -->
       <div class="flex-1 flex flex-col">
@@ -67,19 +67,6 @@ const onSidebarChange = (index: number) => {
                 thumb="https://fastly.jsdelivr.net/npm/@vant/assets/ipad.jpeg"
               />
             </van-collapse-item>
-            <van-collapse-item title="Card 3" name="3">
-              <van-card
-                num="2" price="2.00" title="Title" desc="Description"
-                thumb="https://fastly.jsdelivr.net/npm/@vant/assets/ipad.jpeg"
-              />
-            </van-collapse-item>
-            <van-collapse-item title="Card 4" name="4">
-              <van-card
-                num="2" tag="Tag" price="2.00" title="Title" desc="Description"
-                origin-price="10.00"
-                thumb="https://fastly.jsdelivr.net/npm/@vant/assets/ipad.jpeg"
-              />
-            </van-collapse-item>
           </van-collapse>
 
           <div class="mt-4">
@@ -88,7 +75,6 @@ const onSidebarChange = (index: number) => {
         </main>
       </div>
     </template>
-    <!-- ===== Mobile/Tablet layout: Content + Tabbar ===== -->
     <template v-else>
       <div class="w-full flex-1 flex flex-col">
         <van-nav-bar fixed placeholder title="หน้าแรก" />

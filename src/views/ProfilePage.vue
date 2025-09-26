@@ -60,8 +60,9 @@ const onClickLeft = () => history.back()
     <!-- ===== Desktop: Sidebar + Content ===== -->
     <template v-if="isDesktop">
       <!-- Sidebar (ซ้าย) -->
-      <aside class="hidden lg:flex w-64 border-r border-gray-200 min-h-dvh sticky top-0">
-        <div class="w-full pt-[56px]">
+      <div class="min-h-dvh border-r border-gray-200 sticky top-0"
+           style="--van-sidebar-width: 200px;">
+        <div class="pt-[60px]">
           <van-sidebar v-model="sidebar" @change="onSidebarChange">
             <van-sidebar-item title="หน้าแรก" />
             <van-sidebar-item title="ค้นหา" disabled/>
@@ -69,7 +70,7 @@ const onClickLeft = () => history.back()
             <van-sidebar-item title="การตั้งค่า" />
           </van-sidebar>
         </div>
-      </aside>
+      </div>
 
       <!-- Content (ขวา) -->
       <div class="flex-1 flex flex-col">
