@@ -10,7 +10,7 @@ const route = useRoute()
 // --- Responsive: สลับ Sidebar/Tabbar ตามความกว้างจอ
 const { width } = useWindowSize()
 const isDesktop = computed(() => width.value > 1028)
-
+const show = ref(false);
 // --- โปรไฟล์
 const tel = ref('13000000000')
 const name = ref('John Snow')
@@ -63,12 +63,22 @@ const onClickLeft = () => history.back()
       <div class="min-h-dvh border-r border-gray-200 sticky top-0"
            style="--van-sidebar-width: 200px;">
         <div class="pt-[60px]">
+          <van-icon name="arrow" size="24" @click="show = true" />
+          <van-popup
+            v-model:show="show"
+            position="left"
+            :style="{ width: '220px', height: '88%' }"
+            :overlay="false"            
+            :lock-scroll="false" 
+            closeable
+            :close-on-click-overlay="false">
           <van-sidebar v-model="sidebar" @change="onSidebarChange">
             <van-sidebar-item title="หน้าแรก" />
             <van-sidebar-item title="ค้นหา" disabled/>
             <van-sidebar-item title="เพื่อน" disabled/>
             <van-sidebar-item title="การตั้งค่า" />
           </van-sidebar>
+          </van-popup>
         </div>
       </div>
 
