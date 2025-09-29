@@ -23,7 +23,9 @@ const onLogin = async (values: Record<string, string>) => {
 <template>
   <!-- เปลี่ยนเป็น w-full และตัด max-w-md/mx-auto ออก -->
   <div class="w-full min-h-dvh flex flex-col bg-white">
-    <van-nav-bar fixed placeholder title="Login" />
+    <van-nav-bar fixed placeholder 
+    title="Login" 
+    class="custom-navbar"/>
 
     <!-- เอา padding ข้างออกให้เต็มหน้าจอ -->
     <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
@@ -78,5 +80,19 @@ const onLogin = async (values: Record<string, string>) => {
 </template>
 
 <style scoped>
-/* ไม่จำเป็นต้องมีสไตล์เพิ่มก็เต็มหน้าจอแล้ว */
+.custom-navbar {
+  --van-nav-bar-background-color: #1989fa;
+  --van-background-2: #1989fa;
+  background-color: #1989fa;
+  --van-nav-bar-title-text-color: #ffffff; 
+  --van-nav-bar-text-color: #ffffff;
+}
+
+/* เจาะ element ภายใน */
+:deep(.van-nav-bar) {
+  background-color: var(--van-nav-bar-background-color) !important;
+}
+:deep(.van-nav-bar__placeholder) {
+  background-color: #1989fa;
+}
 </style>

@@ -56,7 +56,12 @@ const onDelete = () => {
 
 <template>
   <div class="w-full min-h-dvh flex flex-col bg-white">
-    <van-nav-bar fixed placeholder title="Register" left-text="Back" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar fixed placeholder 
+    title="Register" 
+    left-text="Back" 
+    left-arrow 
+    @click-left="onClickLeft" 
+    class="custom-navbar"/>
 
     <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
       <h2 class="text-2xl font-bold text-blue-500 text-center">Register</h2>
@@ -97,5 +102,19 @@ const onDelete = () => {
 
 
 <style scoped>
+.custom-navbar {
+  --van-nav-bar-background-color: #1989fa;
+  --van-background-2: #1989fa;
+  background-color: #1989fa;
+  --van-nav-bar-title-text-color: #ffffff; 
+  --van-nav-bar-text-color: #ffffff;
+}
 
+/* เจาะ element ภายใน */
+:deep(.van-nav-bar) {
+  background-color: var(--van-nav-bar-background-color) !important;
+}
+:deep(.van-nav-bar__placeholder) {
+  background-color: #1989fa;
+}
 </style>

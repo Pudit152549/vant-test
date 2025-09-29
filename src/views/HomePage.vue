@@ -36,15 +36,15 @@ const onSidebarChange = (index: number) => {
       <div class="min-h-dvh border-r border-gray-200 sticky top-0"
            style="--van-sidebar-width: 200px;">
         <div class="pt-[60px]">
-          <van-icon name="arrow" size="24" @click="show = true" />
           <van-popup
             v-model:show="show"
             position="left"
-            :style="{ width: '220px', height: '88%' }"
-            :overlay="false"            
-            :lock-scroll="false" 
-            closeable
-            :close-on-click-overlay="false">
+            :style="{ width: '220px', height: '88%', backgroundColor: '#1989fa' }"
+            :overlay="false"
+            :lock-scroll="false"
+            :close-on-click-overlay="false"
+            class="custom-sidebar"
+          >
             <van-sidebar v-model="sidebar" @change="onSidebarChange">
               <van-sidebar-item title="หน้าแรก" />
               <van-sidebar-item title="ค้นหา" disabled/>
@@ -57,7 +57,12 @@ const onSidebarChange = (index: number) => {
 
       <!-- Content (ขวา) -->
       <div class="flex-1 flex flex-col">
-        <van-nav-bar fixed placeholder title="หน้าแรก" />
+        <van-nav-bar fixed placeholder title="หน้าแรก" class="custom-navbar">
+          <!-- ปุ่มเปิด popup อยู่ซ้ายสุด -->
+          <template #left>
+            <van-icon name="bars" color="#ffffff" size="24" @click="show = !show" />
+          </template>
+        </van-nav-bar>
         <main class="flex-1 px-6 pt-4 pb-[calc(16px+env(safe-area-inset-bottom))]">
           <h2 class="text-2xl font-bold text-blue-500 text-center">Welcome to Home Page</h2>
           <van-divider :style="{ borderColor: '#1989fa' }" />
@@ -88,7 +93,7 @@ const onSidebarChange = (index: number) => {
     </template>
     <template v-else>
       <div class="w-full flex-1 flex flex-col">
-        <van-nav-bar fixed placeholder title="หน้าแรก" />
+        <van-nav-bar fixed placeholder title="หน้าแรก" class="custom-navbar"/>
         <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
           <h2 class="text-2xl font-bold text-blue-500 text-center">Welcome to Home Page</h2>
           <van-divider :style="{ borderColor: '#1989fa' }" />
@@ -130,5 +135,41 @@ const onSidebarChange = (index: number) => {
 </template>
 
 <style scoped>
-/* ให้ sidebar สูงพอดีจอ (คำนึงถึง NavBar fixed) */
+.custom-navbar {
+  --van-nav-bar-background-color: #1989fa;
+  --van-background-2: #1989fa;
+  background-color: #1989fa;
+  --van-nav-bar-title-text-color: #ffffff; 
+  --van-nav-bar-text-color: #ffffff;
+}
+
+/* เจาะ element ภายใน */
+:deep(.van-nav-bar) {
+  background-color: var(--van-nav-bar-background-color) !important;
+}
+:deep(.van-nav-bar__placeholder) {
+  background-color: #1989fa;
+}
+
+.custom-sidebar {
+  --van-sidebar-text-color: #1989fa;
+  --van-sidebar-background-color: #6db3f9;
+  --van-sidebar-selected-text-color: #ffffff;
+  --van-sidebar-selected-background-color: #1808f6;
+}
+
+/* เจาะ element ภายในของ sidebar */
+:deep(.van-sidebar) {
+  background-color: var(--van-sidebar-background-color) !important;
+}
+
+:deep(.van-sidebar-item) {
+  color: var(--van-sidebar-text-color) !important;
+}
+
+:deep(.van-sidebar-item--selected) {
+  color: var(--van-sidebar-selected-text-color) !important;
+  background-color: var(--van-sidebar-selected-background-color) !important;
+}
 </style>
+
