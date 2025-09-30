@@ -56,68 +56,72 @@ const onClickLeft = () => history.back()
 </script>
 
 <template>
-  <div class="w-full min-h-dvh bg-white flex">
-    <!-- ===== Desktop: Sidebar + Content ===== -->
+  <div class="w-full min-h-dvh bg-[#9fcaf4] flex">
     <template v-if="isDesktop">
-      <!-- Sidebar (ซ้าย) -->
-      <div class="min-h-dvh border-r border-gray-200 sticky top-0"
-           style="--van-sidebar-width: 200px;">
-        <div class="pt-[60px]">
-          <van-icon name="arrow" size="24" @click="show = true" />
-          <van-popup
-            v-model:show="show"
-            position="left"
-            :style="{ width: '220px', height: '88%' }"
-            :overlay="false"            
-            :lock-scroll="false" 
-            closeable
-            :close-on-click-overlay="false">
+      <div class="w-full min-h-dvh bg-[#9fcaf4] flex" 
+      style="--van-sidebar-width: 200px;">
+        <!-- Popup Sidebar -->
+        <van-popup
+           v-model:show="show"
+          position="left"
+          :style="{ width: '220px', height: 'calc(100dvh - 90px)',  }"
+          :overlay="false"
+          :lock-scroll="false"
+          :close-on-click-overlay="false"
+          :z-index="2000"
+          class="custom-sidebar"
+        >
           <van-sidebar v-model="sidebar" @change="onSidebarChange">
             <van-sidebar-item title="หน้าแรก" />
-            <van-sidebar-item title="ค้นหา" disabled/>
-            <van-sidebar-item title="เพื่อน" disabled/>
+            <van-sidebar-item title="ค้นหา" />
+            <van-sidebar-item title="เพื่อน" />
             <van-sidebar-item title="การตั้งค่า" />
           </van-sidebar>
-          </van-popup>
+        </van-popup>
+
+        <!-- Content: ดันขวาเมื่อ show = true -->
+        <div
+          class="flex-1 flex flex-col transition-all duration-300"
+          :style="{ marginLeft: show ? '220px' : '0px' }"
+        >
+          <van-nav-bar fixed placeholder title="การตั้งค่า" class="custom-navbar z-[3000]">
+            <template #left>
+              <van-icon name="bars" color="#ffffff" size="24" @click="show = !show" />
+            </template>
+          </van-nav-bar>
+
+          <main class="flex-1 px-6 pt-4 pb-[calc(16px+env(safe-area-inset-bottom))]">
+            <h2 class="text-2xl font-bold text-blue-500 text-center">Profile Setting</h2>
+            <van-divider :style="{ borderColor: '#1989fa' }" />
+
+            <div class="my-4">
+              <van-row justify="center">
+                <van-image
+                  round
+                  width="10rem"
+                  height="10rem"
+                  src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+                />
+              </van-row>
+            </div>
+
+            <van-contact-card type="edit" :tel="tel" :name="name" @click="onEdit" />
+            <van-divider :style="{ borderColor: '#1989fa' }" />
+
+            <div class="mt-4 px-4">
+              <van-row justify="center">
+                <van-button type="danger" size="small" @click="onLogout">Logout</van-button>
+              </van-row>
+            </div>
+          </main>
         </div>
-      </div>
-
-      <!-- Content (ขวา) -->
-      <div class="flex-1 flex flex-col">
-        <van-nav-bar fixed placeholder title="การตั้งค่า" left-text="Back" left-arrow @click-left="onClickLeft" />
-
-        <main class="flex-1 px-6 pt-4 pb-[calc(16px+env(safe-area-inset-bottom))]">
-          <h2 class="text-2xl font-bold text-blue-500 text-center">Profile Setting</h2>
-          <van-divider :style="{ borderColor: '#1989fa' }" />
-
-          <div class="my-4">
-            <van-row justify="center">
-              <van-image
-                round
-                width="10rem"
-                height="10rem"
-                src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
-              />
-            </van-row>
-          </div>
-
-          <van-contact-card type="edit" :tel="tel" :name="name" @click="onEdit" />
-
-          <van-divider :style="{ borderColor: '#1989fa' }" />
-
-          <div class="mt-4 px-4">
-            <van-row justify="center">
-              <van-button type="danger" size="small" @click="onLogout">Logout</van-button>
-            </van-row>
-          </div>
-        </main>
       </div>
     </template>
 
     <!-- ===== Mobile/Tablet: Content + Tabbar ===== -->
     <template v-else>
       <div class="w-full flex-1 flex flex-col">
-        <van-nav-bar fixed placeholder title="การตั้งค่า" left-text="Back" left-arrow @click-left="onClickLeft" />
+        <van-nav-bar fixed placeholder title="การตั้งค่า" left-text="Back" left-arrow @click-left="onClickLeft" class="custom-navbar"/>
 
         <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
           <h2 class="text-2xl font-bold text-blue-500 text-center">Profile Setting</h2>
@@ -158,5 +162,48 @@ const onClickLeft = () => history.back()
 </template>
 
 <style scoped>
-/* ไม่จำเป็นต้องมี CSS เพิ่ม — ใช้ Tailwind utility พอแล้ว */
+.custom-navbar {
+  --van-nav-bar-background-color: #1989fa;
+  --van-background-2: #1989fa;
+  background-color: #1989fa;
+  --van-nav-bar-title-text-color: #ffffff; 
+  --van-nav-bar-text-color: #ffffff;
+}
+
+/* เจาะ element ภายใน */
+:deep(.van-nav-bar) {
+  background-color: var(--van-nav-bar-background-color) !important;
+}
+:deep(.van-nav-bar__placeholder) {
+  background-color: #1989fa;
+}
+
+.custom-sidebar {
+  --van-sidebar-text-color: #1989fa;
+  --van-sidebar-background-color: #6db3f9;
+  --van-sidebar-selected-text-color: #ffffff;
+  --van-sidebar-selected-background-color: #1808f6;
+  --van-sidebar-selected-border-height: 60px;
+}
+
+/* เจาะ element ภายในของ sidebar */
+:deep(.van-sidebar) {
+  background-color: var(--van-sidebar-background-color) !important;
+}
+
+:deep(.van-sidebar-item) {
+  color: var(--van-sidebar-text-color) !important;
+}
+
+:deep(.van-sidebar-item--selected) {
+  color: var(--van-sidebar-selected-text-color) !important;
+  background-color: var(--van-sidebar-selected-background-color) !important;
+}
+:deep(.van-sidebar-item--selected) {
+  background-color: var(--van-sidebar-selected-background-color) !important;
+}
+:deep(.van-sidebar-item--selected .van-sidebar-item__text) {
+  color: var(--van-sidebar-selected-text-color) !important;
+}
 </style>
+
