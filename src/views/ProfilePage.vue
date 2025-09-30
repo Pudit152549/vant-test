@@ -59,7 +59,7 @@ const onClickLeft = () => history.back()
   <div class="w-full min-h-dvh bg-[#9fcaf4] flex">
     <template v-if="isDesktop">
       <div class="w-full min-h-dvh bg-[#9fcaf4] flex" 
-      style="--van-sidebar-width: 200px;">
+      style="--van-sidebar-width: 220px;">
         <!-- Popup Sidebar -->
         <van-popup
            v-model:show="show"
@@ -67,7 +67,7 @@ const onClickLeft = () => history.back()
           :style="{ width: '220px', height: 'calc(100dvh - 90px)',  }"
           :overlay="false"
           :lock-scroll="false"
-          :close-on-click-overlay="false"
+          :close-on-click-overlay="true"
           :z-index="2000"
           class="custom-sidebar"
         >

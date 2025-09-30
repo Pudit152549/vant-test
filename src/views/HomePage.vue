@@ -33,16 +33,32 @@ const onSidebarChange = (index: number) => {
 <template>
   <div class="w-full min-h-dvh bg-[#9fcaf4] flex">
     <template v-if="isDesktop">
+      <van-nav-bar fixed placeholder title="หน้าแรก" class="custom-navbar z-[3000]">
+          <template #left>
+            <!-- ทั้งบล็อกนี้คือ hit area -->
+            <div
+              class="nav-left-hit-area"
+              role="button"
+              aria-label="Toggle menu"
+              tabindex="0"
+              @click="show = !show"
+              @keydown.enter.prevent="show = !show"
+              @keydown.space.prevent="show = !show"
+            >
+              <van-icon name="bars" color="#ffffff" size="24" />
+            </div>
+          </template>
+      </van-nav-bar>
       <div class="w-full min-h-dvh bg-[#9fcaf4] flex"
-      style="--van-sidebar-width: 200px;">
+      style="--van-sidebar-width: 220px;">
         <!-- Popup เมนูซ้าย -->
         <van-popup
           v-model:show="show"
           position="left"
-          :style="{ width: '220px', height: 'calc(100dvh - 90px)',  }"
+          :style="{ width: '220px', height: '100%', marginTop: 'var(--van-nav-bar-height)' }"
           :overlay="false"
           :lock-scroll="false"
-          :close-on-click-overlay="false"
+          :close-on-click-overlay="true"
           :z-index="2000"
           class="custom-sidebar"
         >
@@ -55,16 +71,11 @@ const onSidebarChange = (index: number) => {
         </van-popup>
 
         <!-- คอนเทนต์: เลื่อนขวาเมื่อเมนูเปิด -->
+         
         <div
           class="flex-1 flex flex-col transition-all duration-300"
-          :style="{ marginLeft: show ? '220px' : '0px' }"
+          :style="{ marginTop: 'var(--van-nav-bar-height)' }"
         >
-          <van-nav-bar fixed placeholder title="หน้าแรก" class="custom-navbar z-[3000]">
-            <template #left>
-              <van-icon name="bars" color="#ffffff" size="24" @click="show = !show" />
-            </template>
-          </van-nav-bar>
-
         <main class="flex-1 px-6 pt-4 pb-[calc(16px+env(safe-area-inset-bottom))]">
           <h2 class="text-2xl font-bold text-blue-500 text-center">Welcome to Home Page</h2>
           <van-divider :style="{ borderColor: '#1989fa' }" />
@@ -180,6 +191,19 @@ const onSidebarChange = (index: number) => {
 }
 :deep(.van-sidebar-item--selected .van-sidebar-item__text) {
   color: var(--van-sidebar-selected-text-color) !important;
+}
+/* ให้โซนซ้ายของ NavBar ทั้งหมดเป็นมือด้วย */
+:deep(.van-nav-bar__left) {
+  cursor: pointer;
+}
+
+/* hit area ของเราสูงเท่า navbar และกว้างพอคลิกง่าย */
+.nav-left-hit-area {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px; /* ขยายพื้นที่คลิกด้านข้าง */
+  cursor: pointer;
 }
 </style>
 
