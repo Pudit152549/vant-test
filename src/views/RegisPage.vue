@@ -117,4 +117,7 @@ const onDelete = () => {
 :deep(.van-nav-bar__placeholder) {
   background-color: #1989fa;
 }
+:deep(.van-nav-bar .van-icon) {
+    color: #ffffff;
+}
 </style>

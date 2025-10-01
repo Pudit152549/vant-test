@@ -67,7 +67,7 @@ const onSidebarChange = (index: number) => {
           <van-sidebar v-model="sidebar" @change="onSidebarChange">
             <van-sidebar-item title="หน้าแรก" />
             <van-sidebar-item title="ค้นหา" disabled />
-            <van-sidebar-item title="เพื่อน" disabled />
+            <van-sidebar-item title="เพื่อน" />
             <van-sidebar-item title="การตั้งค่า" />
           </van-sidebar>
         </van-popup>

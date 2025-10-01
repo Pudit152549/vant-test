@@ -19,11 +19,6 @@ const images = [
 
     <van-search v-model="search" placeholder="Search" />
     <van-divider :style="{ borderColor: '#1989fa' }" />
-    <!-- <van-swipe :autoplay="3000" lazy-render class="h-48 md:h-64 rounded-xl overflow-hidden">
-      <van-swipe-item v-for="image in images" :key="image" class="h-full">
-        <img :src="image" class="w-full h-full object-cover"/>
-      </van-swipe-item>
-    </van-swipe> -->
     <van-divider :style="{ borderColor: '#1989fa' }" />
     <van-collapse v-model="activeNames" class="mt-2">
       <van-collapse-item title="Card 1" name="1">

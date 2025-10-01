@@ -4,7 +4,10 @@ import { showDialog, showToast } from 'vant'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-
+type contactInfo = {
+  name: string
+  tel: string
+}
 // ข้อมูลโปรไฟล์
 const tel = ref('13000000000')
 const name = ref('John Snow')
@@ -20,10 +23,15 @@ const onLogout = () => {
     .then(() => router.push('/')) // กลับไปหน้า Login
     .catch(() => {})
 }
+    const editingContact = ref({
+      tel: '',
+      name: '',
+    });
+    const onSave = (contactInfo: contactInfo, _index: number) => showToast('Save' + contactInfo.name + contactInfo.tel);
 </script>
 
 <template>
-  <!-- AppLayout จะห่อหน้านี้ให้เอง: มี NavBar/Sidebar/Spacing เรียบร้อย -->
+  <!-- AppLayout: มี NavBar/Sidebar/Spacing -->
   <section>
     <h2 class="text-2xl font-bold text-blue-500 text-center">Profile Setting</h2>
     <van-divider :style="{ borderColor: '#1989fa' }" />
@@ -38,8 +46,14 @@ const onLogout = () => {
         />
       </van-row>
     </div>
-
-    <van-contact-card type="edit" :tel="tel" :name="name" @click="onEdit" />
+      <van-contact-card type="edit" :tel="tel" :name="name" @click="onEdit" />
+    <!-- <div class="w-full h-auto">
+      <van-contact-edit
+      is-edit
+      :contact-info="editingContact"
+      @save="onSave"
+    />
+    </div> -->
     <van-divider :style="{ borderColor: '#1989fa' }" />
 
     <div class="mt-4 px-4">
