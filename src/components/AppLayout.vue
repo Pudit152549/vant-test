@@ -16,7 +16,7 @@ const navTitle = computed(() => {
   const t = (route.meta as Record<string, unknown>).title
   return typeof t === 'string' ? t : 'หน้าแรก'
 })
-const menuRoutes: string[] = ['/home', '/search', '/calendar', '/profile']
+const menuRoutes: string[] = ['/home', '/calendar', '/friends', '/profile']
 
 watchEffect(() => {
   const idx = menuRoutes.indexOf(route.path)
@@ -93,8 +93,8 @@ const onSidebarChange = (index: number) => {
         </main>
         <van-tabbar route v-model="navbar" fixed safe-area-inset-bottom>
           <van-tabbar-item icon="home-o" to="/home">หน้าแรก</van-tabbar-item>
-          <van-tabbar-item icon="search" to="/search">ค้นหา</van-tabbar-item>
           <van-tabbar-item icon="calendar-o" to="/calendar">ปฏิทิน</van-tabbar-item>
+          <van-tabbar-item icon="friends-o" to="/friends">เพื่อน</van-tabbar-item>
           <van-tabbar-item icon="setting-o" to="/profile">การตั้งค่า</van-tabbar-item>
         </van-tabbar>
       </div>
@@ -139,5 +139,9 @@ const onSidebarChange = (index: number) => {
   height: 100%;
   padding: 0 16px;
   cursor: pointer;
+}
+.van-sidebar-item--disabled {
+    color: #000000 !important;
+    background-color: #a0a0a0 !important;
 }
 </style>
