@@ -42,7 +42,9 @@ const onLogout = () => {
           round
           width="10rem"
           height="10rem"
-          src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+          fit="cover"
+          position="top"
+          src="https://i.pinimg.com/736x/8c/cf/1a/8ccf1a558b9f4b4d01f1b928c7566e04.jpg"
         />
       </van-row>
     </div>

@@ -16,7 +16,7 @@ const navTitle = computed(() => {
   const t = (route.meta as Record<string, unknown>).title
   return typeof t === 'string' ? t : 'หน้าแรก'
 })
-const menuRoutes: string[] = ['/home', '/search', '/friends', '/profile']
+const menuRoutes: string[] = ['/home', '/search', '/calendar', '/profile']
 
 watchEffect(() => {
   const idx = menuRoutes.indexOf(route.path)
@@ -66,7 +66,7 @@ const onSidebarChange = (index: number) => {
         >
           <van-sidebar v-model="sidebar" @change="onSidebarChange">
             <van-sidebar-item title="หน้าแรก" />
-            <van-sidebar-item title="ค้นหา" disabled />
+            <van-sidebar-item title="ปฏิทิน" disabled />
             <van-sidebar-item title="เพื่อน" />
             <van-sidebar-item title="การตั้งค่า" />
           </van-sidebar>
@@ -94,7 +94,7 @@ const onSidebarChange = (index: number) => {
         <van-tabbar route v-model="navbar" fixed safe-area-inset-bottom>
           <van-tabbar-item icon="home-o" to="/home">หน้าแรก</van-tabbar-item>
           <van-tabbar-item icon="search" to="/search">ค้นหา</van-tabbar-item>
-          <van-tabbar-item icon="friends-o" to="/friends">เพื่อน</van-tabbar-item>
+          <van-tabbar-item icon="calendar-o" to="/calendar">ปฏิทิน</van-tabbar-item>
           <van-tabbar-item icon="setting-o" to="/profile">การตั้งค่า</van-tabbar-item>
         </van-tabbar>
       </div>
