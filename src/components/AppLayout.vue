@@ -59,7 +59,6 @@ const onSidebarChange = (index: number) => {
           v-model:show="show"
           position="left"
           :style="{ width: '220px', height: '100%', marginTop: 'var(--van-nav-bar-height)' }"
-          :overlay="false"
           :lock-scroll="false"
           :close-on-click-overlay="true"
           :z-index="2000"
