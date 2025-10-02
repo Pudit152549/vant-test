@@ -65,10 +65,30 @@ const onSidebarChange = (index: number) => {
           class="custom-sidebar"
         >
           <van-sidebar v-model="sidebar" @change="onSidebarChange">
-            <van-sidebar-item title="หน้าแรก" />
-            <van-sidebar-item title="ปฏิทิน" disabled />
-            <van-sidebar-item title="เพื่อน" />
-            <van-sidebar-item title="การตั้งค่า" />
+            <van-sidebar-item>
+              <template #title>
+                <van-icon name="wap-home" class="mr-2" />
+                หน้าแรก
+              </template>
+            </van-sidebar-item>
+            <van-sidebar-item>
+              <template #title>
+                <van-icon name="calendar-o" class="mr-2" />
+                ปฏิทิน
+              </template>
+            </van-sidebar-item>
+            <van-sidebar-item>
+              <template #title>
+                <van-icon name="friends" class="mr-2" />
+                เพื่อน
+              </template>
+            </van-sidebar-item>
+            <van-sidebar-item>
+              <template #title>
+                <van-icon name="setting" class="mr-2" />
+                การตั้งค่า
+              </template>
+            </van-sidebar-item>
           </van-sidebar>
         </van-popup>
 
@@ -104,7 +124,7 @@ const onSidebarChange = (index: number) => {
 
 <style scoped>
 .custom-navbar {
-  --van-nav-bar-background-color: #1989fa;
+  --van-nav-bar-background-color: #3c9cfc;
   --van-background-2: #1989fa;
   background-color: #1989fa;
   --van-nav-bar-title-text-color: #ffffff; 

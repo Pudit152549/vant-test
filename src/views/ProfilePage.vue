@@ -4,16 +4,29 @@ import { showDialog, showToast } from 'vant'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-// type contactInfo = {
-//   name: string
-//   tel: string
-// }
-// ข้อมูลโปรไฟล์
-const tel = ref('13000000000')
-const name = ref('John Snow')
-const onEdit = () => showToast('edit')
+// state สำหรับสลับ view
+const isEditing = ref(false)
 
-// Logout dialog
+// เก็บข้อมูล contact ที่แก้ไข
+const editingContact = ref({
+  name: 'John Snow',
+  tel: '13000000000',
+})
+
+const onEdit = () => {
+  isEditing.value = true
+}
+
+const onSave = (contactInfo: { name: string; tel: string }) => {
+  editingContact.value = { ...contactInfo }
+  showToast(`Saved ${contactInfo.name} ${contactInfo.tel}`)
+  isEditing.value = false
+}
+
+const onCancel = () => {
+  isEditing.value = false
+}
+
 const onLogout = () => {
   showDialog({
     title: 'Notification',
@@ -23,11 +36,6 @@ const onLogout = () => {
     .then(() => router.push('/')) // กลับไปหน้า Login
     .catch(() => {})
 }
-    // const editingContact = ref({
-    //   tel: '',
-    //   name: '',
-    // });
-    // const onSave = (contactInfo: contactInfo, _index: number) => showToast('Save' + contactInfo.name + contactInfo.tel);
 </script>
 
 <template>
@@ -48,14 +56,24 @@ const onLogout = () => {
         />
       </van-row>
     </div>
-      <van-contact-card type="edit" :tel="tel" :name="name" @click="onEdit" />
-    <!-- <div class="w-full h-auto">
+    <template v-if="!isEditing">
+      <van-contact-card
+        type="edit"
+        :tel="editingContact.tel"
+        :name="editingContact.name"
+        @click="onEdit"
+      />
+    </template>
+
+    <!-- ถ้าแก้ไข แสดงฟอร์ม -->
+    <template v-else>
       <van-contact-edit
-      is-edit
-      :contact-info="editingContact"
-      @save="onSave"
-    />
-    </div> -->
+        is-edit
+        :contact-info="editingContact"
+        @save="onSave"
+        @cancel="onCancel"
+      />
+    </template>
     <van-divider :style="{ borderColor: '#1989fa' }" />
 
     <div class="mt-4 px-4">

@@ -18,10 +18,9 @@ const currentPage = ref(1)
     <van-divider :style="{ borderColor: '#1989fa' }" />
 
     <van-search v-model="search" placeholder="Search" />
-    <van-divider :style="{ borderColor: '#1989fa' }" />
-    <van-divider :style="{ borderColor: '#1989fa' }" />
+    <van-divider content-position="left" :style="{ color: '#1989fa', borderColor: '#1989fa' }" >News</van-divider>
     <van-collapse v-model="activeNames" class="mt-2">
-      <van-collapse-item title="Card 1" name="1">
+      <van-collapse-item title="News 1" name="1">
         <van-card
           num="2"
           price="2.00"
@@ -31,7 +30,7 @@ const currentPage = ref(1)
         />
       </van-collapse-item>
 
-      <van-collapse-item title="Card 2" name="2">
+      <van-collapse-item title="News 2" name="2">
         <van-card
           num="2"
           tag="Tag"
