@@ -5,10 +5,10 @@ import { ref } from 'vue'
 const search = ref('')
 const activeNames = ref<string[]>(['1'])
 const currentPage = ref(1)
-const images = [
-      'https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
-      'https://fastly.jsdelivr.net/npm/@vant/assets/apple-2.jpeg',
-    ];
+// const images = [
+//       'https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
+//       'https://fastly.jsdelivr.net/npm/@vant/assets/apple-2.jpeg',
+//     ];
 </script>
 
 <template>
