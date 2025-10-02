@@ -4,10 +4,10 @@ import { showDialog, showToast } from 'vant'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-type contactInfo = {
-  name: string
-  tel: string
-}
+// type contactInfo = {
+//   name: string
+//   tel: string
+// }
 // ข้อมูลโปรไฟล์
 const tel = ref('13000000000')
 const name = ref('John Snow')
@@ -23,11 +23,11 @@ const onLogout = () => {
     .then(() => router.push('/')) // กลับไปหน้า Login
     .catch(() => {})
 }
-    const editingContact = ref({
-      tel: '',
-      name: '',
-    });
-    const onSave = (contactInfo: contactInfo, _index: number) => showToast('Save' + contactInfo.name + contactInfo.tel);
+    // const editingContact = ref({
+    //   tel: '',
+    //   name: '',
+    // });
+    // const onSave = (contactInfo: contactInfo, _index: number) => showToast('Save' + contactInfo.name + contactInfo.tel);
 </script>
 
 <template>
