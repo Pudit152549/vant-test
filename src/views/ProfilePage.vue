@@ -38,6 +38,7 @@ const onLogout = () => {
 }
 
 const showTel = ref(false)
+const showAge = ref(false)
 const tel = ref('');
 const age = ref('');
 const firstname = ref('');
@@ -131,7 +132,17 @@ const checked = ref('')
             @cancel="showPicker = false"
           />
         </van-popup>
-        <van-field v-model="age" name="age" label="Age" placeholder="Age" />
+        <van-field v-model="age" readonly clickable @touchstart.stop="showAge = true"
+          name="Age"
+          label="Age"
+          placeholder="Age" />
+        <van-number-keyboard
+            v-model="age"
+            :show="showAge"
+            close-button-text="Close"
+            @blur="showAge = false"
+            :maxlength="2"
+          />
       </van-cell-group>
     </div>
     <van-divider :style="{ borderColor: '#1989fa' }" />

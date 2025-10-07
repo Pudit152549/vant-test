@@ -16,8 +16,18 @@ const currentPage = ref(1)
   <section>
     <h2 class="text-2xl font-bold text-blue-500 text-center">Welcome to Home Page</h2>
     <van-divider :style="{ borderColor: '#1989fa' }" />
-
+    <div class="my-4">
     <van-search v-model="search" shape="round" background="#1989fa" placeholder="Search" />
+    </div>
+    <van-row justify="center">
+    <van-image
+      width="10rem"
+      height="10rem"
+      fit="cover"
+      position="center"
+      src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Rickrolling_QR_code.png"
+    />
+    </van-row>
     <van-divider content-position="left" :style="{ color: '#1808f6', borderColor: '#1808f6' }" >News</van-divider>
     <van-collapse v-model="activeNames" class="mt-2">
       <van-collapse-item title="News 1" name="1">

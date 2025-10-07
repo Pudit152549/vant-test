@@ -5,7 +5,7 @@ import Vant from 'vant'
 import 'vant/lib/index.css'
 import router from './router'
 import { Locale } from 'vant';
-import thTH from 'vant/es/locale/lang/th-TH';
+import thTH from './locale/lang/th-TH';
 
 const app = createApp(App)
 app.use(Vant)

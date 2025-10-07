@@ -30,6 +30,12 @@ const onSidebarChange = (index: number) => {
     show.value = false
   }
 }
+const loading = ref(false)
+const onRefresh = () => {
+  setTimeout(() => {
+    loading.value = false
+  }, 1000)
+}
 </script>
 
 <template>
@@ -108,9 +114,12 @@ const onSidebarChange = (index: number) => {
     <template v-else>
       <div class="w-full flex-1 flex flex-col">
         <van-nav-bar fixed placeholder :title="navTitle" class="custom-navbar"/>
-        <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
-          <router-view />
-        </main>
+        <van-pull-refresh v-model="loading" @refresh="onRefresh">
+          <main class="flex-1 px-0 pt-3 
+          pb-[calc(var(--van-tabbar-height,50px)+24px+env(safe-area-inset-bottom))]">
+            <router-view />
+          </main>
+        </van-pull-refresh>
         <van-tabbar route v-model="navbar" fixed safe-area-inset-bottom>
           <van-tabbar-item icon="home-o" to="/home">หน้าแรก</van-tabbar-item>
           <van-tabbar-item icon="calendar-o" to="/calendar">ปฏิทิน</van-tabbar-item>
