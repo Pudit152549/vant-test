@@ -25,7 +25,7 @@ const currentPage = ref(1)
       height="10rem"
       fit="cover"
       position="center"
-      src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Rickrolling_QR_code.png"
+      src="https://ih1.redbubble.net/image.4845773235.0663/tst,small,845x845-pad,1000x1000,f8f8f8.jpg"
     />
     </van-row>
     <van-divider content-position="left" :style="{ color: '#1808f6', borderColor: '#1808f6' }" >News</van-divider>
