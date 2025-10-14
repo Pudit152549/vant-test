@@ -54,7 +54,7 @@ const currentPage = ref(1)
     </van-collapse>
     <van-divider :style="{ borderColor: '#1989fa' }" />
     <div class="mt-4">
-      <van-pagination v-model="currentPage" :total-items="24" :items-per-page="4" />
+      <van-pagination v-model="currentPage" :total-items="18" :items-per-page="4" />
     </div>
   </section>
 </template>

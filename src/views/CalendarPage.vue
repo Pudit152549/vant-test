@@ -3,12 +3,15 @@ import { ref } from 'vue'
     const date = ref('');
     const show = ref(false);
 
-    const formatDate = (date: Date) => `${date.getMonth() + 1}/${date.getDate()}`;
+    const formatDate = (date: Date) => `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
     const onConfirm = (values: [Date, Date]) => {
       const [start, end] = values;
       show.value = false;
       date.value = `${formatDate(start)} - ${formatDate(end)}`;
     };
+    const fileList = ref([
+      { url: 'https://fastly.jsdelivr.net/npm/@vant/assets/leaf.jpeg' },
+    ]);
 </script>
 
 <template>
@@ -21,6 +24,9 @@ import { ref } from 'vue'
         <van-cell title="เลือกวันที่" :value="date" @click="show = true" />
         <van-calendar v-model:show="show" type="range" @confirm="onConfirm" />
     <van-divider :style="{ borderColor: '#1989fa' }" />
+    <van-uploader v-model="fileList" multiple :preview-size="[120, 100]">
+      <van-button icon="plus" type="primary">Upload Image</van-button>
+    </van-uploader>
   </section>
 </template>
 
