@@ -2,64 +2,78 @@
 import { ref } from 'vue'
 import { showDialog, showToast } from 'vant'
 import { useRouter } from 'vue-router'
+import { useProfileStore } from '../stores/profile'
+import type { Contact, ProfileForm } from '../stores/profile'
 
+// ===== Store =====
+const profile = useProfileStore()
+
+// ===== Router / Dialogs =====
 const router = useRouter()
-// state สำหรับสลับ view
-const isEditing = ref(false)
-const onAdd = () => showToast('add')
-// เก็บข้อมูล contact ที่แก้ไข
-const editingContact = ref({
-  name: 'John Snow',
-  tel: '13000000000',
-})
-
-const onEdit = () => {
-  isEditing.value = true
-}
-
-const onSave = (contactInfo: { name: string; tel: string }) => {
-  editingContact.value = { ...contactInfo }
-  showToast(`Saved ${contactInfo.name} ${contactInfo.tel}`)
-  isEditing.value = false
-}
-
-const onDelete = () => {
-  isEditing.value = false
-}
-
 const onLogout = () => {
   showDialog({
     title: 'Notification',
     message: 'Are you sure you want to logout?',
     showCancelButton: true,
   })
-    .then(() => router.push('/')) // กลับไปหน้า Login
+    .then(() => router.push('/'))
     .catch(() => {})
 }
 
+// ===== Contact card (แยกจากฟอร์ม) =====
+const onAddContact = () => showToast('add')
+const onEditContact = () => profile.startEditContact()
+const onSaveContact = (contactInfo: Contact) => {
+  profile.saveContact(contactInfo)
+  showToast(`Saved ${contactInfo.name} ${contactInfo.tel}`)
+}
+const onCancelContact = () => profile.cancelContact()
+
+// map ไปยัง store โดยตรง (v-model กับ pinia ได้สบาย)
 const showTel = ref(false)
 const showAge = ref(false)
-const tel = ref('');
-const age = ref('');
-const firstname = ref('');
-const lastname = ref('');
-const result = ref('');
-    const showPicker = ref(false);
-    const pickerValue = ref<string[]>([]);
-    const onConfirm = ({ selectedValues }: { selectedValues: string[] }) => {
-      result.value = selectedValues.join('/');
-      pickerValue.value = selectedValues;
-      showPicker.value = false;
-    };
-const checked = ref('')
+const showPicker = ref(false)
+const pickerValue = ref<string[]>([])
+
+// ย่อชื่อตัวแปรเพื่อใช้งานสะดวก
+const form = profile.form
+
+const onConfirmBirth = ({ selectedValues }: { selectedValues: string[] }) => {
+  form.birthDate = selectedValues.join('/')
+  pickerValue.value = selectedValues
+  showPicker.value = false
+}
+
+// Submit ฟอร์ม: บันทึก + ล็อกฟอร์ม
+const onSubmit = async (values: Record<string, string>) => {
+  const required = ['firstname', 'lastname', 'tel', 'age', 'gender', 'birthDate']
+  const complete = required.every(k => values[k])
+
+  if (!complete) {
+    showToast('กรุณากรอกข้อมูลให้ครบ')
+    return
+  }
+
+  profile.saveForm({ ...profile.form } as ProfileForm)
+
+  await showDialog({
+    title: 'แจ้งเตือน',
+    message: 'บันทึกข้อมูลสำเร็จ ✅',
+  })
+}
+
+// ปุ่ม Edit เพื่อปลดล็อกฟอร์ม
+const onEditForm = () => {
+  profile.unlockForm()
+}
 </script>
 
 <template>
-  <!-- AppLayout: มี NavBar/Sidebar/Spacing -->
   <section>
     <h2 class="text-2xl font-bold text-blue-500 text-center">Profile Setting</h2>
     <van-divider :style="{ borderColor: '#1989fa' }" />
 
+    <!-- Avatar -->
     <div class="my-4">
       <van-row justify="center">
         <van-image
@@ -72,79 +86,142 @@ const checked = ref('')
         />
       </van-row>
     </div>
+
+    <!-- ===== CONTACT SECTION (แยกจากฟอร์ม) ===== -->
     <div class="my-2">
-      <van-contact-card type="add" @click="onAdd" />
-      <template v-if="!isEditing">
+      <van-contact-card type="add" @click="onAddContact" />
+
+      <template v-if="!profile.isEditingContact">
         <van-contact-card
           type="edit"
-          :tel="editingContact.tel"
-          :name="editingContact.name"
-          @click="onEdit"
+          :tel="profile.contact.tel"
+          :name="profile.contact.name"
+          @click="onEditContact"
         />
       </template>
 
-      <!-- ถ้าแก้ไข แสดงฟอร์ม -->
       <template v-else>
         <van-contact-edit
           is-edit
-          :contact-info="editingContact"
-          @save="onSave"
-          @cancel="onDelete"
+          :contact-info="profile.contact"
+          @save="onSaveContact"
+          @cancel="onCancelContact"
         />
       </template>
     </div>
+
+    <!-- ===== FORM SECTION (แยกข้อมูลออกจาก contact) ===== -->
     <div class="my-4">
-      <van-cell-group inset>
-        <van-field v-model="firstname" label="Firstname" placeholder="Firstname" />
-        <van-field v-model="lastname" label="Lastname" placeholder="Lastname" />
-        <van-field v-model="tel" readonly clickable @touchstart.stop="showTel = true"
-          name="Telephone"
-          label="Telephone"
-          placeholder="Telephone" />
-        <van-number-keyboard
-            v-model="tel"
-            :show="showTel"
+      <van-form @submit="onSubmit">
+        <van-cell-group inset>
+          <van-field
+            v-model="form.firstname"
+            name="firstname"
+            label="Firstname"
+            placeholder="Firstname"
+            :disabled="profile.isFormLocked"
+            :rules="[{ required: true, message: 'Firstname is required' }]"
+          />
+          <van-field
+            v-model="form.lastname"
+            name="lastname"
+            label="Lastname"
+            placeholder="Lastname"
+            :disabled="profile.isFormLocked"
+            :rules="[{ required: true, message: 'Lastname is required' }]"
+          />
+
+          <van-field
+            v-model="form.tel"
+            name="tel"
+            label="Telephone"
+            placeholder="Telephone"
+            :readonly="true"
+            :clickable="!profile.isFormLocked"
+            :disabled="profile.isFormLocked"
+            @touchstart.stop="!profile.isFormLocked && (showTel = true)"
+            :rules="[{ required: true, message: 'Telephone is required' }]"
+          />
+          <van-number-keyboard
+            v-model="form.tel"
+            :show="showTel && !profile.isFormLocked"
             close-button-text="Close"
             @blur="showTel = false"
             :maxlength="10"
           />
-        <van-field name="gender" label="Gender">
-          <template #input>
-            <van-radio-group v-model="checked" direction="horizontal" shape="dot">
-              <van-radio name="1" checked-color="#1808f6">Male</van-radio>
-              <van-radio name="2" checked-color="#1808f6">Female</van-radio>
-            </van-radio-group>
-          </template>
-        </van-field>
-        <van-field
-          v-model="result"
-          is-link
-          readonly
-          name="birthDate"
-          label="Birth Date"
-          placeholder="Select date"
-          @click="showPicker = true"
-        />
-        <van-popup v-model:show="showPicker" destroy-on-close position="bottom">
-          <van-date-picker
-            :model-value="pickerValue"
-            @confirm="onConfirm"
-            @cancel="showPicker = false"
+
+          <van-field name="gender" label="Gender" :disabled="profile.isFormLocked">
+            <template #input>
+              <van-radio-group v-model="form.gender" direction="horizontal" shape="dot">
+                <van-radio name="1" checked-color="#1808f6" :disabled="profile.isFormLocked">Male</van-radio>
+                <van-radio name="2" checked-color="#1808f6" :disabled="profile.isFormLocked">Female</van-radio>
+              </van-radio-group>
+            </template>
+          </van-field>
+
+          <van-field
+            v-model="form.birthDate"
+            name="birthDate"
+            is-link
+            readonly
+            label="Birth Date"
+            placeholder="Select date"
+            :disabled="profile.isFormLocked"
+            @click="!profile.isFormLocked && (showPicker = true)"
           />
-        </van-popup>
-        <van-field v-model="age" readonly clickable @touchstart.stop="showAge = true"
-          name="Age"
-          label="Age"
-          placeholder="Age" />
-        <van-number-keyboard
-            v-model="age"
-            :show="showAge"
+          <van-popup v-model:show="showPicker" destroy-on-close position="bottom">
+            <van-date-picker
+              :model-value="pickerValue"
+              @confirm="onConfirmBirth"
+              @cancel="showPicker = false"
+            />
+          </van-popup>
+
+          <van-field
+            v-model="form.age"
+            name="age"
+            label="Age"
+            placeholder="Age"
+            :readonly="true"
+            :clickable="!profile.isFormLocked"
+            :disabled="profile.isFormLocked"
+            @touchstart.stop="!profile.isFormLocked && (showAge = true)"
+            :rules="[{ required: true, message: 'Age is required' }]"
+          />
+          <van-number-keyboard
+            v-model="form.age"
+            :show="showAge && !profile.isFormLocked"
             close-button-text="Close"
             @blur="showAge = false"
             :maxlength="2"
           />
-      </van-cell-group>
+        </van-cell-group>
+
+        <!-- ปุ่ม Save จะบันทึก + ล็อกฟอร์ม, ปุ่ม Edit ปลดล็อก -->
+        <div style="margin: 16px;">
+          <van-button
+            v-if="!profile.isFormLocked"
+            round
+            block
+            type="primary"
+            native-type="submit"
+          >
+            Save
+          </van-button>
+
+          <van-button
+            v-else
+            round
+            block
+            type="default"
+            @click="onEditForm"
+          >
+            Edit
+          </van-button>
+        </div>
+      </van-form>
     </div>
+
     <van-divider :style="{ borderColor: '#1989fa' }" />
 
     <div class="mt-4 px-4">
@@ -156,5 +233,5 @@ const checked = ref('')
 </template>
 
 <style scoped>
-/* หน้านี้ไม่ต้องมีสไตล์ NavBar/Sidebar */
+/* ไม่มีสไตล์ layout ที่นี่ เพราะ AppLayout จัดการให้แล้ว */
 </style>
