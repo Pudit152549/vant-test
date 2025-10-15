@@ -29,13 +29,12 @@ const onSaveContact = (contactInfo: Contact) => {
 }
 const onCancelContact = () => profile.cancelContact()
 
-// map ไปยัง store โดยตรง (v-model กับ pinia ได้สบาย)
+// map ไปยัง store โดยตรง
 const showTel = ref(false)
 const showAge = ref(false)
 const showPicker = ref(false)
 const pickerValue = ref<string[]>([])
 
-// ย่อชื่อตัวแปรเพื่อใช้งานสะดวก
 const form = profile.form
 
 const onConfirmBirth = ({ selectedValues }: { selectedValues: string[] }) => {
@@ -44,7 +43,6 @@ const onConfirmBirth = ({ selectedValues }: { selectedValues: string[] }) => {
   showPicker.value = false
 }
 
-// Submit ฟอร์ม: บันทึก + ล็อกฟอร์ม
 const onSubmit = async (values: Record<string, string>) => {
   const required = ['firstname', 'lastname', 'tel', 'age', 'gender', 'birthDate']
   const complete = required.every(k => values[k])
@@ -114,6 +112,14 @@ const onEditForm = () => {
     <div class="my-4">
       <van-form @submit="onSubmit">
         <van-cell-group inset>
+          <van-field
+            v-model="form.username"
+            name="username"
+            label="Username"
+            placeholder="Username"
+            :disabled="profile.isFormLocked"
+            :rules="[{ required: true, message: 'Username is required' }]"
+          />
           <van-field
             v-model="form.firstname"
             name="firstname"

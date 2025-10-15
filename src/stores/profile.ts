@@ -6,6 +6,7 @@ export type Contact = {
 }
 
 export type ProfileForm = {
+  username: string
   firstname: string
   lastname: string
   tel: string
@@ -25,6 +26,7 @@ export const useProfileStore = defineStore('profile', {
 
     // ข้อมูลฟอร์ม (ของแบบฟอร์มรายละเอียด)
     form: {
+      username: '',
       firstname: '',
       lastname: '',
       tel: '',
@@ -64,6 +66,7 @@ export const useProfileStore = defineStore('profile', {
     // ตัวอย่าง: reset ฟอร์ม (หากอยากมี)
     resetForm() {
       this.form = {
+        username: '',
         firstname: '',
         lastname: '',
         tel: '',

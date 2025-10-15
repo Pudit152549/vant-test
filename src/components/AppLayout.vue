@@ -2,7 +2,9 @@
 import { ref, computed, watchEffect } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
+import { useUiStore } from '../stores/ui'
 
+const ui = useUiStore()
 const { width } = useWindowSize()
 const isDesktop = computed(() => width.value > 1028)
 
@@ -115,8 +117,8 @@ const onRefresh = () => {
       <div class="w-full flex-1 flex flex-col">
         <van-nav-bar fixed placeholder :title="navTitle" class="custom-navbar"/>
         <van-pull-refresh v-model="loading" @refresh="onRefresh">
-          <main class="flex-1 px-0 pt-3 
-          pb-[calc(var(--van-tabbar-height,50px)+24px+env(safe-area-inset-bottom))]">
+          <main class="flex-1 px-0 pt-3"
+                :style="{ paddingBottom: ui.keyboardPaddingMobile }">
             <router-view />
           </main>
         </van-pull-refresh>
