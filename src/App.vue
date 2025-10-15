@@ -24,8 +24,9 @@ onMounted(async () => {
     if (url.search) {
       history.replaceState({}, '', url.origin + url.pathname)
     }
-  } catch (err) {
-    console.error('LIFF initialization failed:', err)
+  } catch (error) {
+    console.log(error, error);
+    console.error('LIFF initialization failed:', error)
   }
 })
 </script>
