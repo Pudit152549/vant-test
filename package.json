@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@line/liff": "^2.27.2",
     "@tailwindcss/vite": "^4.1.13",
     "@vueuse/core": "^13.9.0",
     "moment": "^2.30.1",
