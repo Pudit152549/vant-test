@@ -25,7 +25,7 @@ onMounted(async () => {
     // ✅ เก็บค่าที่ได้ลงใน store (ซึ่ง persist ด้วย useStorage)
     profileStore.form.userId = profile.userId
     profileStore.form.displayName = profile.displayName
-    profileStore.form.pictureUrl = profile.pictureUrl
+    profileStore.form.pictureUrl = profile.pictureUrl || ''
 
     // ล้าง query string ที่ LIFF แถมมา
     const url = new URL(window.location.href)
