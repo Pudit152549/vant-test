@@ -25,7 +25,6 @@ onMounted(async () => {
       history.replaceState({}, '', url.origin + url.pathname)
     }
   } catch (error) {
-    console.log(error, error);
     console.error('LIFF initialization failed:', error)
   }
 })
