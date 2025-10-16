@@ -1,4 +1,3 @@
-<!-- src/views/ProfilePage.vue -->
 <script setup lang="ts">
 import { ref } from 'vue'
 import { showDialog, showToast } from 'vant'
@@ -8,8 +7,9 @@ import type { Contact, ProfileForm } from '../stores/profile'
 
 // ===== Store =====
 const profile = useProfileStore()
+const form = profile.form
 
-// ===== Router / Dialogs =====
+// ===== Router =====
 const router = useRouter()
 const onLogout = () => {
   showDialog({
@@ -21,19 +21,16 @@ const onLogout = () => {
     .catch(() => {})
 }
 
-// ===== Contact card (แยกจากฟอร์ม) =====
+// ===== Contact =====
 const onAddContact = () => showToast('add')
 const onEditContact = () => profile.startEditContact()
-const onSaveContact = (contactInfo: Contact) => {
-  profile.saveContact(contactInfo)
-  showToast(`Saved ${contactInfo.name} ${contactInfo.tel}`)
+const onSaveContact = (c: Contact) => {
+  profile.saveContact(c)
+  showToast(`Saved ${c.name} ${c.tel}`)
 }
 const onCancelContact = () => profile.cancelContact()
 
-// ===== ฟอร์ม (อ้างอิงจาก store โดยตรง) =====
-const form = profile.form
-
-// UI states
+// ===== Form actions =====
 const showTel = ref(false)
 const showAge = ref(false)
 const showPicker = ref(false)
@@ -54,7 +51,6 @@ const onSubmit = async (values: Record<string, string>) => {
     return
   }
 
-  // ✅ save แล้ว lock ฟอร์ม (และ persist อัตโนมัติ)
   profile.saveForm({ ...profile.form } as ProfileForm)
 
   await showDialog({
@@ -63,7 +59,6 @@ const onSubmit = async (values: Record<string, string>) => {
   })
 }
 
-// ปุ่ม Edit เพื่อปลดล็อกฟอร์ม
 const onEditForm = () => profile.unlockForm()
 </script>
 
@@ -81,15 +76,14 @@ const onEditForm = () => profile.unlockForm()
           height="10rem"
           fit="cover"
           position="top"
-          src="https://i.pinimg.com/736x/8c/cf/1a/8ccf1a558b9f4b4d01f1b928c7566e04.jpg"
+          :src="form.userId ? `https://profile.line-scdn.net/${form.userId}` : 'https://i.pinimg.com/736x/8c/cf/1a/8ccf1a558b9f4b4d01f1b928c7566e04.jpg'"
         />
       </van-row>
     </div>
 
-    <!-- ===== CONTACT SECTION (แยกจากฟอร์ม) ===== -->
+    <!-- Contact -->
     <div class="my-2">
       <van-contact-card type="add" @click="onAddContact" />
-
       <template v-if="!profile.isEditingContact">
         <van-contact-card
           type="edit"
@@ -98,7 +92,6 @@ const onEditForm = () => profile.unlockForm()
           @click="onEditContact"
         />
       </template>
-
       <template v-else>
         <van-contact-edit
           is-edit
@@ -109,54 +102,23 @@ const onEditForm = () => profile.unlockForm()
       </template>
     </div>
 
-    <!-- ===== FORM SECTION ===== -->
+    <!-- Form -->
     <div class="my-4">
       <van-form @submit="onSubmit">
         <van-cell-group inset>
-          <van-field
-            v-model="form.userId"
-            name="User ID"
-            label="User ID"
-            placeholder="User ID"
-            :disabled="profile.isFormLocked"
-            :rules="[{ required: true, message: 'User ID is required' }]"
-          />
-          <van-field
-            v-model="form.displayName"
-            name="Displayname"
-            label="Username"
-            placeholder="UserName"
-            :disabled="profile.isFormLocked"
-            :rules="[{ required: true, message: 'Username is required' }]"
-          />
+          <van-field v-model="form.userId" label="User ID" readonly />
+          <van-field v-model="form.displayName" label="Username" readonly />
 
-          <van-field
-            v-model="form.firstname"
-            name="firstname"
-            label="Firstname"
-            placeholder="Firstname"
-            :disabled="profile.isFormLocked"
-            :rules="[{ required: true, message: 'Firstname is required' }]"
-          />
-          <van-field
-            v-model="form.lastname"
-            name="lastname"
-            label="Lastname"
-            placeholder="Lastname"
-            :disabled="profile.isFormLocked"
-            :rules="[{ required: true, message: 'Lastname is required' }]"
-          />
+          <van-field v-model="form.firstname" label="Firstname" :disabled="profile.isFormLocked" />
+          <van-field v-model="form.lastname" label="Lastname" :disabled="profile.isFormLocked" />
 
           <van-field
             v-model="form.tel"
-            name="tel"
             label="Telephone"
-            placeholder="Telephone"
             :readonly="true"
             :clickable="!profile.isFormLocked"
             :disabled="profile.isFormLocked"
             @touchstart.stop="!profile.isFormLocked && (showTel = true)"
-            :rules="[{ required: true, message: 'Telephone is required' }]"
           />
           <van-number-keyboard
             v-model="form.tel"
@@ -166,26 +128,23 @@ const onEditForm = () => profile.unlockForm()
             :maxlength="10"
           />
 
-          <van-field name="gender" label="Gender" :disabled="profile.isFormLocked">
+          <van-field label="Gender" :disabled="profile.isFormLocked">
             <template #input>
               <van-radio-group v-model="form.gender" direction="horizontal" shape="dot">
-                <van-radio name="1" checked-color="#1808f6" :disabled="profile.isFormLocked">Male</van-radio>
-                <van-radio name="2" checked-color="#1808f6" :disabled="profile.isFormLocked">Female</van-radio>
+                <van-radio name="1" checked-color="#1808f6">Male</van-radio>
+                <van-radio name="2" checked-color="#1808f6">Female</van-radio>
               </van-radio-group>
             </template>
           </van-field>
 
           <van-field
             v-model="form.birthDate"
-            name="birthDate"
             is-link
             readonly
             label="Birth Date"
-            placeholder="Select date"
-            :disabled="profile.isFormLocked"
             @click="!profile.isFormLocked && (showPicker = true)"
           />
-          <van-popup v-model:show="showPicker" destroy-on-close position="bottom">
+          <van-popup v-model:show="showPicker" position="bottom">
             <van-date-picker
               :model-value="pickerValue"
               @confirm="onConfirmBirth"
@@ -195,14 +154,11 @@ const onEditForm = () => profile.unlockForm()
 
           <van-field
             v-model="form.age"
-            name="age"
             label="Age"
-            placeholder="Age"
             :readonly="true"
             :clickable="!profile.isFormLocked"
             :disabled="profile.isFormLocked"
             @touchstart.stop="!profile.isFormLocked && (showAge = true)"
-            :rules="[{ required: true, message: 'Age is required' }]"
           />
           <van-number-keyboard
             v-model="form.age"
@@ -213,25 +169,12 @@ const onEditForm = () => profile.unlockForm()
           />
         </van-cell-group>
 
-        <!-- Save/Lock & Edit/Unlock -->
         <div style="margin: 16px;">
-          <van-button
-            v-if="!profile.isFormLocked"
-            round
-            block
-            type="primary"
-            native-type="submit"
-          >
+          <van-button v-if="!profile.isFormLocked" round block type="primary" native-type="submit">
             Save
           </van-button>
 
-          <van-button
-            v-else
-            round
-            block
-            type="default"
-            @click="onEditForm"
-          >
+          <van-button v-else round block type="default" @click="onEditForm">
             Edit
           </van-button>
         </div>
@@ -239,7 +182,6 @@ const onEditForm = () => profile.unlockForm()
     </div>
 
     <van-divider :style="{ borderColor: '#1989fa' }" />
-
     <div class="mt-4 px-4">
       <van-row justify="center">
         <van-button type="danger" size="small" @click="onLogout">Logout</van-button>
@@ -248,6 +190,4 @@ const onEditForm = () => profile.unlockForm()
   </section>
 </template>
 
-<style scoped>
-/* ไม่มีสไตล์ layout ที่นี่ เพราะ AppLayout จัดการให้แล้ว */
-</style>
+<style scoped></style>

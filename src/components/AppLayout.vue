@@ -16,7 +16,7 @@ const navTitle = computed(() => {
   const t = (route.meta as Record<string, unknown>).title
   return typeof t === 'string' ? t : 'หน้าแรก'
 })
-const menuRoutes: string[] = ['/home', '/calendar', '/friends', '/profile']
+const menuRoutes: string[] = ['/', '/calendar', '/friends', '/profile']
 
 watchEffect(() => {
   const idx = menuRoutes.indexOf(route.path)
@@ -121,7 +121,7 @@ const onRefresh = () => {
           </main>
         </van-pull-refresh>
         <van-tabbar route v-model="navbar" fixed safe-area-inset-bottom>
-          <van-tabbar-item icon="home-o" to="/home">หน้าแรก</van-tabbar-item>
+          <van-tabbar-item icon="home-o" to="/">หน้าแรก</van-tabbar-item>
           <van-tabbar-item icon="calendar-o" to="/calendar">ปฏิทิน</van-tabbar-item>
           <van-tabbar-item icon="friends-o" to="/friends">เพื่อน</van-tabbar-item>
           <van-tabbar-item icon="setting-o" to="/profile">การตั้งค่า</van-tabbar-item>
