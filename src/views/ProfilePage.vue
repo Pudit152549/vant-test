@@ -70,13 +70,11 @@ const onEditForm = () => profile.unlockForm()
     <!-- Avatar -->
     <div class="my-4">
       <van-row justify="center">
-        <van-image
-          round
-          width="10rem"
-          height="10rem"
-          fit="cover"
-          position="top"
-          :src="form.userId ? `https://profile.line-scdn.net/${form.userId}` : 'https://i.pinimg.com/736x/8c/cf/1a/8ccf1a558b9f4b4d01f1b928c7566e04.jpg'"
+        <img 
+          v-if="profile.form.pictureUrl"
+          :src="profile.form.pictureUrl"
+          alt="Profile"
+          class="w-[10rem] h-[10rem] rounded-full object-cover"
         />
       </van-row>
     </div>

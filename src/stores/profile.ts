@@ -9,6 +9,7 @@ export type Contact = {
 export type ProfileForm = {
   userId: string
   displayName: string
+  pictureUrl: string
   firstname: string
   lastname: string
   tel: string
@@ -24,6 +25,7 @@ export const useProfileStore = defineStore('profile', {
       {
         userId: '',
         displayName: '',
+        pictureUrl: '',
         firstname: '',
         lastname: '',
         tel: '',
@@ -72,6 +74,7 @@ export const useProfileStore = defineStore('profile', {
       this.form = {
         userId: '',
         displayName: '',
+        pictureUrl: '',
         firstname: '',
         lastname: '',
         tel: '',
