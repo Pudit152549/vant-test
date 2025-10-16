@@ -16,6 +16,9 @@ onMounted(async () => {
       liff.login({ redirectUri: window.location.href })
       return
     }
+    if (liff.isLoggedIn()) {
+      liff.logout();
+    }
 
     const profile = await liff.getProfile()
     console.log('LIFF profile:', profile)

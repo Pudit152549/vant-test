@@ -1,4 +1,6 @@
+// src/stores/profile.ts
 import { defineStore } from 'pinia'
+import { useStorage, StorageSerializers } from '@vueuse/core'
 
 export type Contact = {
   name: string
@@ -6,34 +8,44 @@ export type Contact = {
 }
 
 export type ProfileForm = {
-  username: string
+  userId: string
+  displayName: string
   firstname: string
   lastname: string
   tel: string
   gender: '1' | '2' | ''
   birthDate: string
-  age: string  // เก็บเป็น string เพื่อเข้ากับ van-number-keyboard
+  age: string // เก็บ string ให้เข้ากับ van-number-keyboard
 }
 
 export const useProfileStore = defineStore('profile', {
   state: () => ({
-    contact: {
-      name: 'John Snow',
-      tel: '13000000000',
-    } as Contact,
+    // ✅ persist ฟอร์มด้วย useStorage: เขียน/อ่านจาก localStorage อัตโนมัติ
+    form: useStorage<ProfileForm>(
+      'profileUser',
+      {
+        userId: '',
+        displayName: '',
+        firstname: '',
+        lastname: '',
+        tel: '',
+        gender: '',
+        birthDate: '',
+        age: '',
+      },
+      undefined,
+      { serializer: StorageSerializers.object }
+    ),
+
+    // ✅ (optional) persist contact ด้วยก็ได้
+    contact: useStorage<Contact>(
+      'profileContact',
+      { name: 'John Snow', tel: '13000000000' },
+      undefined,
+      { serializer: StorageSerializers.object }
+    ),
 
     isEditingContact: false,
-
-    // ข้อมูลฟอร์ม (ของแบบฟอร์มรายละเอียด)
-    form: {
-      username: '',
-      firstname: '',
-      lastname: '',
-      tel: '',
-      gender: '',
-      birthDate: '',
-      age: '',
-    } as ProfileForm,
 
     // ล็อก/ปลดล็อกฟอร์ม (true = disabled ทั้งหมด)
     isFormLocked: false,
@@ -45,7 +57,7 @@ export const useProfileStore = defineStore('profile', {
       this.isEditingContact = true
     },
     saveContact(payload: Contact) {
-      this.contact = { ...payload }
+      this.contact = { ...payload } // useStorage จะเขียนลง localStorage ให้อัตโนมัติ
       this.isEditingContact = false
     },
     cancelContact() {
@@ -60,13 +72,13 @@ export const useProfileStore = defineStore('profile', {
       this.isFormLocked = true
     },
     saveForm(payload: ProfileForm) {
-      this.form = { ...payload }
+      this.form = { ...payload } // useStorage จะ persist ให้ทันที
       this.lockForm()
     },
-    // ตัวอย่าง: reset ฟอร์ม (หากอยากมี)
     resetForm() {
       this.form = {
-        username: '',
+        userId: '',
+        displayName: '',
         firstname: '',
         lastname: '',
         tel: '',
@@ -74,6 +86,7 @@ export const useProfileStore = defineStore('profile', {
         birthDate: '',
         age: '',
       }
+      this.isFormLocked = false
     },
   },
 })

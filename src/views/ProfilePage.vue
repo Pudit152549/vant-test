@@ -1,8 +1,8 @@
+<!-- src/views/ProfilePage.vue -->
 <script setup lang="ts">
 import { ref } from 'vue'
 import { showDialog, showToast } from 'vant'
 import { useRouter } from 'vue-router'
-import { StorageSerializers, useStorage } from "@vueuse/core"
 import { useProfileStore } from '../stores/profile'
 import type { Contact, ProfileForm } from '../stores/profile'
 
@@ -30,13 +30,14 @@ const onSaveContact = (contactInfo: Contact) => {
 }
 const onCancelContact = () => profile.cancelContact()
 
-// map ไปยัง store โดยตรง
+// ===== ฟอร์ม (อ้างอิงจาก store โดยตรง) =====
+const form = profile.form
+
+// UI states
 const showTel = ref(false)
 const showAge = ref(false)
 const showPicker = ref(false)
 const pickerValue = ref<string[]>([])
-
-const form = profile.form
 
 const onConfirmBirth = ({ selectedValues }: { selectedValues: string[] }) => {
   form.birthDate = selectedValues.join('/')
@@ -53,6 +54,7 @@ const onSubmit = async (values: Record<string, string>) => {
     return
   }
 
+  // ✅ save แล้ว lock ฟอร์ม (และ persist อัตโนมัติ)
   profile.saveForm({ ...profile.form } as ProfileForm)
 
   await showDialog({
@@ -62,9 +64,7 @@ const onSubmit = async (values: Record<string, string>) => {
 }
 
 // ปุ่ม Edit เพื่อปลดล็อกฟอร์ม
-const onEditForm = () => {
-  profile.unlockForm()
-}
+const onEditForm = () => profile.unlockForm()
 </script>
 
 <template>
@@ -109,18 +109,27 @@ const onEditForm = () => {
       </template>
     </div>
 
-    <!-- ===== FORM SECTION (แยกข้อมูลออกจาก contact) ===== -->
+    <!-- ===== FORM SECTION ===== -->
     <div class="my-4">
       <van-form @submit="onSubmit">
         <van-cell-group inset>
           <van-field
-            v-model="form.username"
-            name="username"
+            v-model="form.userId"
+            name="User ID"
+            label="User ID"
+            placeholder="User ID"
+            :disabled="profile.isFormLocked"
+            :rules="[{ required: true, message: 'User ID is required' }]"
+          />
+          <van-field
+            v-model="form.displayName"
+            name="Displayname"
             label="Username"
-            placeholder="Username"
+            placeholder="UserName"
             :disabled="profile.isFormLocked"
             :rules="[{ required: true, message: 'Username is required' }]"
           />
+
           <van-field
             v-model="form.firstname"
             name="firstname"
@@ -204,7 +213,7 @@ const onEditForm = () => {
           />
         </van-cell-group>
 
-        <!-- ปุ่ม Save จะบันทึก + ล็อกฟอร์ม, ปุ่ม Edit ปลดล็อก -->
+        <!-- Save/Lock & Edit/Unlock -->
         <div style="margin: 16px;">
           <van-button
             v-if="!profile.isFormLocked"
