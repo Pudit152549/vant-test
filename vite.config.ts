@@ -12,11 +12,9 @@ export default defineConfig({
     tailwindcss(),
     AutoImport({
       resolvers: [VantResolver()],
-      dts: 'src/auto-imports.d.ts',
     }),
     Components({
       resolvers: [VantResolver()],
-      dts: 'src/components.d.ts',
     }),
   ],
   resolve: {
