@@ -193,6 +193,9 @@ const onEditForm = () => profile.unlockForm()
           <van-button v-if="!profile.isFormLocked" round block type="primary" native-type="submit">
             Save
           </van-button>
+          <van-button v-if="!profile.isFormLocked" round block type="default" @click="profile.cancelForm">
+            Cancel
+          </van-button>
 
           <van-button v-else round block type="default" @click="onEditForm">
             Edit

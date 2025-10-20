@@ -46,6 +46,7 @@ export const useProfileStore = defineStore('profile', {
 
     isEditingContact: false,
     isFormLocked: false,
+    _formSnapshot: null as ProfileForm | null,
   }),
 
   actions: {
@@ -61,14 +62,29 @@ export const useProfileStore = defineStore('profile', {
     },
 
     unlockForm() {
+      // เก็บ snapshot ก่อนแก้ไข
+      this._formSnapshot = typeof structuredClone === 'function'
+        ? structuredClone(this.form)
+        : JSON.parse(JSON.stringify(this.form))
       this.isFormLocked = false
     },
     lockForm() {
       this.isFormLocked = true
     },
-    saveForm(payload: ProfileForm) {
-      this.form = { ...payload }
-      this.lockForm()
+    saveForm(payload?: ProfileForm) {
+      if (payload) this.form = { ...payload }
+      this.isFormLocked = true
+      this._formSnapshot = null // บันทึกแล้วไม่ต้องเก็บ snapshot ต่อ
+    },
+    cancelForm() {
+      // ถ้ามี snapshot ให้ย้อนกลับ
+      if (this._formSnapshot) {
+        this.form = typeof structuredClone === 'function'
+          ? structuredClone(this._formSnapshot)
+          : JSON.parse(JSON.stringify(this._formSnapshot))
+      }
+      this.isFormLocked = true
+      this._formSnapshot = null
     },
     resetForm() {
       this.form = {
@@ -83,6 +99,7 @@ export const useProfileStore = defineStore('profile', {
         age: '',
       }
       this.isFormLocked = false
+      this._formSnapshot = null
     },
   },
 })
