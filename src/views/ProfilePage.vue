@@ -35,7 +35,7 @@ const onLogout = () => {
       // liff.login({ redirectUri: window.location.href })
     })
     .catch(() => {
-      // ผู้ใช้กดยกเลิก หรือปิด dialog
+      console.log('Logout cancelled')
     })
 }
 

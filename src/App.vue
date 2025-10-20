@@ -27,11 +27,6 @@ onMounted(async () => {
     profileStore.form.displayName = profile.displayName
     profileStore.form.pictureUrl = profile.pictureUrl || ''
 
-    // ล้าง query string ที่ LIFF แถมมา
-    const url = new URL(window.location.href)
-    if (url.search) {
-      history.replaceState({}, '', url.origin + url.pathname)
-    }
   } catch (error) {
     console.error('LIFF initialization failed:', error)
   }
