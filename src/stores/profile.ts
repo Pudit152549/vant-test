@@ -70,9 +70,6 @@ export const useProfileStore = defineStore('profile', {
       this.form = { ...payload }
       this.lockForm()
     },
-    cancelForm() {
-      this.lockForm()
-    },
     resetForm() {
       this.form = {
         userId: '',
