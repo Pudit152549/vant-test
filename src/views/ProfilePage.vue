@@ -22,7 +22,8 @@ const onLogout = () => {
       // ถ้าอยู่ใน LIFF และล็อกอินอยู่ → ออกจากระบบ
       if (liff.isLoggedIn()) {
         liff.logout()
-        liff.login({ redirectUri: window.location.href })
+        window.location.reload()
+        liff.login({ redirectUri: window.location.origin + '/' })
       }
       // จากนั้นพาออกไปหน้าแรก/หน้า login (เลือกอันใดอันหนึ่ง)
       // 1) reload ทั้งแอป (แนะนำใน LIFF)
@@ -32,7 +33,7 @@ const onLogout = () => {
       //router.replace('/')
 
       // 3) หรือถ้าต้องการให้ขึ้นหน้า login ของ LINE ทันทีหลัง logout:
-      // liff.login({ redirectUri: window.location.href })
+      // liff.login({ redirectUri: window.location.origin + '/' })
     })
     .catch(() => {
       console.log('Logout cancelled')
