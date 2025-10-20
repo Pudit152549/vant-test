@@ -15,7 +15,7 @@ onMounted(async () => {
     await liff.init({ liffId: LIFF_ID })
 
     if (!liff.isLoggedIn()) {
-      liff.login({ redirectUri: window.location.href })
+      liff.login({ redirectUri: window.location.origin + '/' })
       return
     }
 
