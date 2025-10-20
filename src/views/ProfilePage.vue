@@ -189,7 +189,7 @@ const onEditForm = () => profile.unlockForm()
           />
         </van-cell-group>
 
-        <div style="margin: 16px;">
+        <div class="my-4">
           <van-button v-if="!profile.isFormLocked" round block type="primary" native-type="submit">
             Save
           </van-button>
