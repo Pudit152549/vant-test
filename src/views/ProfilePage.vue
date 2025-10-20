@@ -210,4 +210,9 @@ const onEditForm = () => profile.unlockForm()
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+  /* ปรับสีพื้นหลังของ Number Keyboard */
+:deep(.van-number-keyboard) {
+    background-color: #9abcff;;
+  }
+</style>
