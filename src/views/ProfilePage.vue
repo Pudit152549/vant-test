@@ -61,16 +61,19 @@ const onConfirmBirth = ({ selectedValues }: { selectedValues: string[] }) => {
   showPicker.value = false
 }
 
-const onSubmit = async (values: Record<string, string>) => {
-  const required = ['firstname', 'lastname', 'tel', 'age', 'gender', 'birthDate']
-  const complete = required.every(k => values[k])
+const onSubmit = async () => {
+  const missing = [
+    'firstname','lastname','tel','age','gender','birthDate'
+  ].filter((k) => !(form as any)[k])
 
-  if (!complete) {
+  console.log('submit form =', { ...form }, 'missing:', missing)
+
+  if (missing.length) {
     showToast('กรุณากรอกข้อมูลให้ครบ')
     return
   }
 
-  profile.saveForm({ ...profile.form } as ProfileForm)
+  profile.saveForm({ ...form } as ProfileForm)
 
   await showDialog({
     title: 'แจ้งเตือน',
