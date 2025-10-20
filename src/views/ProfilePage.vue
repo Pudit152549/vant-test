@@ -150,7 +150,7 @@ const onEditForm = () => profile.unlockForm()
 
           <van-field label="Gender" :disabled="profile.isFormLocked">
             <template #input>
-              <van-radio-group v-model="form.gender" direction="horizontal" shape="dot">
+              <van-radio-group v-model="form.gender" direction="horizontal" shape="dot" :disabled="profile.isFormLocked">
                 <van-radio name="1" checked-color="#1808f6">Male</van-radio>
                 <van-radio name="2" checked-color="#f608c3">Female</van-radio>
               </van-radio-group>
