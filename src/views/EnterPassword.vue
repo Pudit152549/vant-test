@@ -1,15 +1,31 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-// import { showNotify, } from 'vant'
-//import { useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { showNotify } from 'vant'
+import { useRouter } from 'vue-router'
 
-//const router = useRouter()
+const router = useRouter()
+const CORRECT_PIN = '123456'
 const value = ref('');
 const showKeyboard = ref(false);
-// showNotify({
-//       type: 'danger',
-//       message: 'กรุณาลองใหม่อีกครั้ง',
-//     })
+watch(value, (v) => {
+  if (v.length < 6) return
+
+  if (v === CORRECT_PIN) {
+    // ✅ ถูกต้อง
+    showKeyboard.value = false
+    router.push('/')
+  } else {
+    // ❌ ไม่ถูกต้อง → แจ้งเตือน + เคลียร์ค่า + เปิดคีย์บอร์ดต่อ
+    showNotify({
+      type: 'warning',       // 'primary' | 'success' | 'danger' | 'warning'
+      message: 'PIN ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง',
+      position: 'bottom',    // ถ้าชอบให้เด้งล่าง
+      duration: 2000,
+    })
+    value.value = ''         // เคลียร์ช่อง
+    showKeyboard.value = true
+  }
+})
 </script>
 
 <template>
