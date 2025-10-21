@@ -23,7 +23,7 @@ const onLogout = () => {
       if (liff.isLoggedIn()) {
         liff.logout()
         window.location.reload()
-        liff.login({ redirectUri: window.location.origin + '/' })
+        liff.login({ redirectUri: window.location.origin + '/password' })
       }
       // จากนั้นพาออกไปหน้าแรก/หน้า login (เลือกอันใดอันหนึ่ง)
       // 1) reload ทั้งแอป (แนะนำใน LIFF)
