@@ -22,6 +22,7 @@ const showKeyboard = ref(true);
             :gutter="6"
             :focused="showKeyboard"
             @focus="showKeyboard = true"
+            class="custom-password-input"
             />
             <van-number-keyboard
             v-model="value"
@@ -46,6 +47,11 @@ const showKeyboard = ref(true);
   --van-nav-bar-title-text-color: #ffffff; 
   --van-nav-bar-text-color: #ffffff;
 }
+.custom-password-input {
+  --van-password-input-border-color: #bbebff;
+  --van-password-input-focus-border-color: #1989fa;
+  --van-password-input-background-color: #c8e6ff;
+}
 
 /* เจาะ element ภายใน */
 :deep(.van-nav-bar) {
@@ -54,7 +60,4 @@ const showKeyboard = ref(true);
 :deep(.van-nav-bar__placeholder) {
   background-color: #1989fa;
 }
-:deep(.van-password-input__security li) {
-  border-color: #bbebff !important;
-} 
 </style>
