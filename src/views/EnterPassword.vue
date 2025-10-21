@@ -15,10 +15,9 @@ showNotify({
 <template>
   <!-- เปลี่ยนเป็น w-full และตัด max-w-md/mx-auto ออก -->
   <div class="w-full min-h-dvh flex flex-col bg-white">
-
+    <h2 class="text-2xl font-bold text-blue-500 text-center">กรุณาใส่ PIN</h2>
     <!-- เอา padding ข้างออกให้เต็มหน้าจอ -->
     <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
-      <h2 class="text-2xl font-bold text-blue-500 text-center">กรุณาใส่ PIN</h2>
         <van-password-input
         :value="value"
         :gutter="6"
@@ -51,4 +50,7 @@ showNotify({
 :deep(.van-nav-bar__placeholder) {
   background-color: #1989fa;
 }
+:deep(.van-password-input__security li) {
+  border-color: #bbebff !important;
+} 
 </style>
