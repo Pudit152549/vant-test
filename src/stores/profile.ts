@@ -45,7 +45,7 @@ export const useProfileStore = defineStore('profile', {
     ),
 
     isEditingContact: false,
-    isFormLocked: false,
+    isFormLocked: true,
   }),
 
   actions: {
