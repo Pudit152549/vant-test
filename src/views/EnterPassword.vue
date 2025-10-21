@@ -29,6 +29,11 @@ const showKeyboard = ref(true);
             @blur="showKeyboard = false"
             />
             <van-divider :style="{ borderColor: '#1989fa' }" />
+            <div class="mt-4 text-center">
+            <van-button plain type="primary" size="small">
+              ลืมรหัส PIN
+            </van-button>
+          </div>
         </main>
     </div>
 </template>
