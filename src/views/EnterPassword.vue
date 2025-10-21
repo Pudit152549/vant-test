@@ -60,4 +60,8 @@ const showKeyboard = ref(true);
 :deep(.van-nav-bar__placeholder) {
   background-color: #1989fa;
 }
+:deep(.van-password-input__security li) {
+  background-color: var(--van-password-input-background-color) !important;
+  border-color: var(--van-password-input-border-color) !important;
+}
 </style>
