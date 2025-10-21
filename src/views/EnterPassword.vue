@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { showNotify, } from 'vant'
+// import { showNotify, } from 'vant'
 //import { useRouter } from 'vue-router'
 
 //const router = useRouter()
 const value = ref('');
 const showKeyboard = ref(true);
-showNotify({
-      type: 'danger',
-      message: 'กรุณาลองใหม่อีกครั้ง',
-    })
+// showNotify({
+//       type: 'danger',
+//       message: 'กรุณาลองใหม่อีกครั้ง',
+//     })
 </script>
 
 <template>
 <div class="w-full min-h-dvh flex flex-col bg-white">
-<van-nav-bar fixed placeholder title="PIN" class="custom-navbar"/>
     <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
         <h2 class="text-2xl font-bold text-blue-500 text-center">กรุณาใส่ PIN</h2>
             <van-password-input
