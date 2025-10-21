@@ -7,10 +7,10 @@ const router = useRouter()
 const CORRECT_PIN = '123456'
 const value = ref('');
 const showKeyboard = ref(false);
-watch(value, (v) => {
-  if (v.length < 6) return
+watch(value, (PIN) => {
+  if (PIN.length < 6) return
 
-  if (v === CORRECT_PIN) {
+  if (PIN === CORRECT_PIN) {
     // ✅ ถูกต้อง
     showKeyboard.value = false
     router.push('/')
