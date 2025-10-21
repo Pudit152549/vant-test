@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { showNotify } from 'vant'
+import { showDialog } from 'vant'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -16,10 +16,10 @@ watch(value, (PIN) => {
     router.push('/')
   } else {
     // ❌ ไม่ถูกต้อง → แจ้งเตือน + เคลียร์ค่า + เปิดคีย์บอร์ดต่อ
-    showNotify({
-      type: 'warning',
+    showDialog({
       message: 'PIN ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง',
-      duration: 2000,
+    }).then(() => {
+      // ปิด dialog แล้วทำต่อ
     })
     value.value = ''         // เคลียร์ช่อง
     showKeyboard.value = true
