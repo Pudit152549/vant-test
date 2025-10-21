@@ -17,9 +17,8 @@ watch(value, (PIN) => {
   } else {
     // ❌ ไม่ถูกต้อง → แจ้งเตือน + เคลียร์ค่า + เปิดคีย์บอร์ดต่อ
     showNotify({
-      type: 'warning',       // 'primary' | 'success' | 'danger' | 'warning'
+      type: 'warning',
       message: 'PIN ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง',
-      position: 'bottom',    // ถ้าชอบให้เด้งล่าง
       duration: 2000,
     })
     value.value = ''         // เคลียร์ช่อง
