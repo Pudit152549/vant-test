@@ -5,7 +5,7 @@ import { ref } from 'vue'
 
 //const router = useRouter()
 const value = ref('');
-const showKeyboard = ref(true);
+const showKeyboard = ref(false);
 // showNotify({
 //       type: 'danger',
 //       message: 'กรุณาลองใหม่อีกครั้ง',
@@ -13,7 +13,7 @@ const showKeyboard = ref(true);
 </script>
 
 <template>
-<div class="w-full min-h-dvh flex flex-col bg-[#9fcaf4]">
+<div class="w-full min-h-dvh flex flex-col bg-white">
     <main class="flex-1 px-0 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]">
         <h2 class="text-2xl font-bold text-blue-500 text-center">กรุณาใส่ PIN</h2>
         <van-divider :style="{ borderColor: '#1989fa' }" />
