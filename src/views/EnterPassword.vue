@@ -40,28 +40,18 @@ const showKeyboard = ref(true);
 </template>
 
 <style scoped>
-.custom-navbar {
-  --van-nav-bar-background-color: #1989fa;
-  --van-background-2: #1989fa;
-  background-color: #1989fa;
-  --van-nav-bar-title-text-color: #ffffff; 
-  --van-nav-bar-text-color: #ffffff;
-}
-.custom-password-input {
-  --van-password-input-border-color: #bbebff;
-  --van-password-input-focus-border-color: #1989fa;
-  --van-password-input-background-color: #c8e6ff;
+.custom-password-input :deep(.van-password-input__security li) {
+  background-color: #c8e6ff !important;  /* สีพื้นช่อง */
+  border: 1px solid #bbebff !important;  /* สีเส้นกรอบช่อง */
 }
 
-/* เจาะ element ภายใน */
-:deep(.van-nav-bar) {
-  background-color: var(--van-nav-bar-background-color) !important;
+/* ตอนโฟกัส (กรอบ active) — Vant ใส่คลาส --focused ที่รายการ */
+.custom-password-input :deep(.van-password-input__item--focused) {
+  border-color: #1989fa !important;
 }
-:deep(.van-nav-bar__placeholder) {
-  background-color: #1989fa;
-}
-:deep(.van-password-input__security li) {
-  background-color: var(--van-password-input-background-color) !important;
-  border-color: var(--van-password-input-border-color) !important;
+
+/* บางธีมใช้เส้นผ่าน pseudo-element */
+.custom-password-input :deep(.van-password-input__security li::after) {
+  border-color: #1989fa !important;
 }
 </style>
