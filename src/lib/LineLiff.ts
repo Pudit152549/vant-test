@@ -44,3 +44,17 @@ export function logoutAndRelogin() {
     liff.login({ redirectUri: window.location.origin + '/password' })
   }
 }
+
+// ตรวจว่าเปิดผ่าน LINE App หรือไม่
+export async function checkIsInLineApp(liffId: string): Promise<boolean> {
+  try {
+    await liff.init({ liffId })
+
+    const inClient = liff.isInClient()
+    console.log('เปิดผ่าน LINE App:', inClient)
+    return inClient
+  } catch (error) {
+    console.error('เกิดข้อผิดพลาดตอนตรวจ LIFF:', error)
+    return false
+  }
+}

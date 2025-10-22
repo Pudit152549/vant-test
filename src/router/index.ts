@@ -8,12 +8,14 @@ import ProfilePage from '../views/ProfilePage.vue'
 import FriendPage from '../views/FriendPage.vue'
 import CalendarPage from '../views/CalendarPage.vue'
 import EnterPassword from '../views/EnterPassword.vue'
+import LineChecked from '../views/LineChecked.vue'
 
 const routes = [
   // ไม่ใช้ layout
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/register', name: 'Register', component: RegisPage },
   { path: '/password', name: 'EnterPassword', component: EnterPassword },
+  { path: '/line-checked', name: 'LineChecked', component: LineChecked },
 
   // ใช้ AppLayout
   {
