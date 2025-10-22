@@ -170,7 +170,9 @@ const onEditForm = () => profile.unlockForm()
             :maxlength="2"
           />
         </van-cell-group>
-
+        <van-row>
+          <van-button type="danger" size="small" @click="$router.push('/line-checked')">ตรวจสอบช่องทางการเข้าถึง</van-button>
+        </van-row>
         <div class="my-4">
           <van-button v-if="!profile.isFormLocked" round block type="primary" native-type="submit">
             Save
