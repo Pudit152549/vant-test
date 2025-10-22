@@ -170,7 +170,7 @@ const onEditForm = () => profile.unlockForm()
             :maxlength="2"
           />
         </van-cell-group>
-        <div class="mt-4">
+        <div class="mt-4 my-4">
           <van-row>
             <van-button plain type="primary" size="small" @click="$router.push('/line-checked')">ตรวจสอบช่องทางการเข้าถึง</van-button>
           </van-row>
