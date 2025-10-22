@@ -2,9 +2,9 @@
 import { ref } from 'vue'
 import { showDialog, showToast } from 'vant'
 //import { useRouter } from 'vue-router'
-import liff from '@line/liff'
 import { useProfileStore } from '../stores/profile'
 import type { Contact, ProfileForm } from '../stores/profile'
+import { logoutAndRelogin } from '../lib/LineLiff'
 
 // ===== Store =====
 const profile = useProfileStore()
@@ -18,26 +18,8 @@ const onLogout = () => {
     message: 'Are you sure you want to logout?',
     showCancelButton: true,
   })
-    .then(() => {
-      // ถ้าอยู่ใน LIFF และล็อกอินอยู่ → ออกจากระบบ
-      if (liff.isLoggedIn()) {
-        liff.logout()
-        window.location.reload()
-        liff.login({ redirectUri: window.location.origin + '/password' })
-      }
-      // จากนั้นพาออกไปหน้าแรก/หน้า login (เลือกอันใดอันหนึ่ง)
-      // 1) reload ทั้งแอป (แนะนำใน LIFF)
-      // window.location.reload()
-
-      // 2) หรือ redirect ไปหน้าแรก
-      //router.replace('/')
-
-      // 3) หรือถ้าต้องการให้ขึ้นหน้า login ของ LINE ทันทีหลัง logout:
-      // liff.login({ redirectUri: window.location.origin + '/' })
-    })
-    .catch(() => {
-      console.log('Logout cancelled')
-    })
+    .then(() => logoutAndRelogin())
+    .catch(() => console.log('Logout cancelled'))
 }
 
 // ===== Contact =====
