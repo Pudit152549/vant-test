@@ -40,13 +40,15 @@
 import { ref, onMounted } from 'vue'
 import { checkIsInLineApp } from '../lib/LineLiff'
 import { useProfileStore } from '../stores/profile'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const profile = useProfileStore()
 const isInClient = ref(false)
 const loading = ref(true)
 const LIFF_ID = '2008291244-OWyLQ4Wa'
 
-const clickGoBack = () => history.back()
+const clickGoBack = () => router.push('/profile')
 
 onMounted(async () => {
   isInClient.value = await checkIsInLineApp(LIFF_ID)
