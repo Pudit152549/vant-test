@@ -36,7 +36,9 @@ const onSelect = (contact: Contact, _index: number) => {
   <section>
     <h2 class="text-2xl font-bold text-blue-500 text-center">Friends</h2>
     <van-divider :style="{ borderColor: '#1989fa' }" />
+    <div class="px-4">
     <van-search v-model="search" placeholder="ค้นหาเพื่อน" />
+    </div>
     <van-divider :style="{ borderColor: '#1989fa' }" />
     <van-contact-list
     v-model="chosenContactId"

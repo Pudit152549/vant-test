@@ -9,7 +9,6 @@ const isDesktop = computed(() => width.value > 1028)
 const router = useRouter()
 const route = useRoute()
 
-const navbar = ref(0)
 const sidebar = ref(0)
 const show = ref(false)
 const navTitle = computed(() => {
@@ -120,7 +119,7 @@ const onRefresh = () => {
             <router-view />
           </main>
         </van-pull-refresh>
-        <van-tabbar route v-model="navbar" fixed safe-area-inset-bottom>
+        <van-tabbar route fixed safe-area-inset-bottom>
           <van-tabbar-item icon="home-o" to="/">หน้าแรก</van-tabbar-item>
           <van-tabbar-item icon="calendar-o" to="/calendar">ปฏิทิน</van-tabbar-item>
           <van-tabbar-item icon="friends-o" to="/friends">เพื่อน</van-tabbar-item>

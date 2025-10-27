@@ -22,7 +22,7 @@ const routes = [
     path: '/',
     component: AppLayout,
     children: [
-      { path: '/', name: 'Home', component: HomePage, meta: { title: 'หน้าแรก' } },
+      { path: '', name: 'Home', component: HomePage, meta: { title: 'หน้าแรก' } },
       { path: '/profile', name: 'Profile', component: ProfilePage, meta: { title: 'โปรไฟล์' } },
       { path: '/friends', name: 'Friends', component: FriendPage, meta: { title: 'เพื่อน' } },
       { path: '/calendar', name: 'Calendar', component: CalendarPage, meta: { title: 'ปฏิทิน' } },

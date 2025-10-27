@@ -18,7 +18,7 @@ import { ref } from 'vue'
   <!-- AppLayout: มี NavBar/Sidebar/Spacing -->
   <section>
     <h2 class="text-2xl font-bold text-blue-500 text-center">Calendar</h2>
-    
+    <div class="px-4">
     <van-divider :style="{ borderColor: '#1989fa' }" />
     <van-notice-bar scrollable text="กรุณาเลือกวันที่" left-icon="info-o" color="#ffffff" background="#1989fa"/>
         <van-cell title="เลือกวันที่" :value="date" @click="show = true" />
@@ -27,6 +27,7 @@ import { ref } from 'vue'
     <van-uploader v-model="fileList" multiple :preview-size="[120, 100]">
       <van-button icon="plus" type="primary">Upload Image</van-button>
     </van-uploader>
+    </div>
   </section>
 </template>
 
