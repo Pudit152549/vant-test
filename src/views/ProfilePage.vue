@@ -84,7 +84,7 @@ const onEditForm = () => profile.unlockForm()
     </div>
 
     <!-- Contact -->
-    <div class="my-2 px-4">
+    <div class="my-2 px-2">
       <van-contact-card type="add" @click="onAddContact" />
       <template v-if="!profile.isEditingContact">
         <van-contact-card
