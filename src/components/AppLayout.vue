@@ -119,12 +119,12 @@ const onRefresh = () => {
             <router-view />
           </main>
         </van-pull-refresh>
-        <van-tabbar route fixed safe-area-inset-bottom>
-          <van-tabbar-item icon="home-o" to="/">หน้าแรก</van-tabbar-item>
-          <van-tabbar-item icon="calendar-o" to="/calendar">ปฏิทิน</van-tabbar-item>
-          <van-tabbar-item icon="friends-o" to="/friends">เพื่อน</van-tabbar-item>
-          <van-tabbar-item icon="setting-o" to="/profile">การตั้งค่า</van-tabbar-item>
-        </van-tabbar>
+          <van-tabbar route fixed safe-area-inset-bottom>
+            <van-tabbar-item icon="home-o"     :to="{ name: 'Home' }"     replace>หน้าแรก</van-tabbar-item>
+            <van-tabbar-item icon="calendar-o" :to="{ name: 'Calendar' }" replace>ปฏิทิน</van-tabbar-item>
+            <van-tabbar-item icon="friends-o"  :to="{ name: 'Friends' }"  replace>เพื่อน</van-tabbar-item>
+            <van-tabbar-item icon="setting-o"  :to="{ name: 'Profile' }"  replace>การตั้งค่า</van-tabbar-item>
+          </van-tabbar>
       </div>
     </template>
   </div>
