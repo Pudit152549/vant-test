@@ -12,7 +12,7 @@
     />
 
     <!-- Main -->
-    <main class="flex-1 flex flex-col items-center justify-center px-4 pb-[calc(16px+env(safe-area-inset-bottom))]">
+    <main class="flex-1 flex flex-col items-center justify-start pt-20 px-4 pb-[calc(16px+env(safe-area-inset-bottom))]">
       <!-- ระหว่างตรวจสอบ -->
       <div v-if="loading" class="flex flex-col items-center justify-center gap-3">
         <van-loading size="32px" type="spinner" />
